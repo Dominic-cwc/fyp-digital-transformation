@@ -3,10 +3,10 @@ import Link from "next/link";
 import { IconHome, IconDocument, IconChartbar } from "./icon";
 import { useEffect } from "react";
 
-export default function SideBar({ isSidebarOpen, setCurrentPage, userRole }) {
+export default function SideBar({ isSidebarOpen, setCurrentPage, user }) {
   useEffect(() => {
-    console.log(userRole);
-  }, [userRole]);
+    console.log(user.role);
+  }, [user.role]);
 
   return (
     <div
@@ -16,8 +16,9 @@ export default function SideBar({ isSidebarOpen, setCurrentPage, userRole }) {
           : "sidebar closed flex flex-col bg-gray-800 text-white"
       }
     >
-      <div className="flex items-center justify-between flex-shrink-0 p-4">
-        <span className="text-lg font-semibold">Dashboard</span>
+      <div className="flex flex-col justify-between flex-shrink-0 p-4">
+        <span className="text-lg font-semibold">DECC System</span>
+        <span className="text-sm italic font-semibold">V1.0</span>
       </div>
       <nav className="flex-1 overflow-y-auto">
         <Link
@@ -30,7 +31,7 @@ export default function SideBar({ isSidebarOpen, setCurrentPage, userRole }) {
           <IconHome className="h-5 w-5 text-gray-300 group-hover:text-white" />
           <span className="ml-2">Home</span>
         </Link>
-        {userRole == "staff" ? (
+        {user.role == "staff" ? (
           <Link
             className="group flex items-center px-4 py-2 text-sm"
             onClick={() => {
@@ -43,7 +44,7 @@ export default function SideBar({ isSidebarOpen, setCurrentPage, userRole }) {
           </Link>
         ) : null}
 
-        {userRole == "manager" || userRole == "staff" ? (
+        {user.role == "manager" || user.role == "staff" ? (
           <Link
             className="group flex items-center px-4 py-2 text-sm"
             href="/"
@@ -56,7 +57,7 @@ export default function SideBar({ isSidebarOpen, setCurrentPage, userRole }) {
           </Link>
         ) : null}
 
-        {userRole == "user" ? (
+        {user.role == "user" ? (
           <Link
             className="group flex items-center px-4 py-2 text-sm"
             href="/"

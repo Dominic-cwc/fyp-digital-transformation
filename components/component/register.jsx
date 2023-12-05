@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import axios from "axios";
 
 export default function register() {
@@ -33,7 +34,12 @@ export default function register() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <Card className="mx-auto max-w-md">
+      <Card
+        className="mx-auto max-w-md"
+        style={{
+          width: "40rem",
+        }}
+      >
         <CardHeader>
           <CardTitle className="text-2xl font-extrabold">Register</CardTitle>
           <CardDescription className="text-gray-500">
@@ -101,8 +107,6 @@ export default function register() {
               </SelectContent>
             </Select>
           </div>
-        </CardContent>
-        <CardFooter>
           <Button
             className="w-full bg-gray-950 text-white font-semibold"
             onClick={() => {
@@ -135,7 +139,13 @@ export default function register() {
               "Register"
             )}
           </Button>
-        </CardFooter>
+          <div className="mt-4 text-center text-sm">
+            Already have an account?
+            <Link className="underline ml-2" href="./">
+              Login
+            </Link>
+          </div>
+        </CardContent>
       </Card>
     </div>
   );

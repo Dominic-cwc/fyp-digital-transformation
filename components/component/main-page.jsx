@@ -25,7 +25,7 @@ export default function MainPage({ user, logout }) {
           <SideBar
             isSidebarOpen={isSidebarOpen}
             setCurrentPage={setCurrentPage}
-            userRole={user.role}
+            user={user}
           />
           <div className="w-full flex flex-col overflow-hidden">
             <header className="flex items-center justify-between flex-shrink-0 px-4 py-2 bg-gray-300 border-b">
@@ -44,6 +44,7 @@ export default function MainPage({ user, logout }) {
 
                 <span className="sr-only">Open sidebar</span>
               </Button>
+              <span className="text-lg font-semibold">{currentPage}</span>
               <Button
                 className="bg-gray-400 transition-all duration-300 ease-in-out hover:bg-red-400"
                 title="Logout"

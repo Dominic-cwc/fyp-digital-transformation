@@ -20,8 +20,17 @@ export default function login({ setUser }) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <Card className="mx-auto max-w-md">
+      <Card
+        className="mx-auto max-w-md"
+        style={{
+          width: "40rem",
+        }}
+      >
         <CardHeader className="space-y-1">
+          <h1 className="text-3xl font-extrabold mb-4 text-center">
+            DECC System V1.0
+          </h1>
+
           <CardTitle className="text-2xl font-extrabold">Login</CardTitle>
           <CardDescription className="text-gray-500">
             Please enter your username and password to login.
