@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.sidebar {
+  width: 256px; /* the width of the sidebar */
+  transition: 0.5s cubic-bezier(0.36, -0.01, 0, 0.77);
+}
+
+.sidebar.closed {
+  margin-left: -256px; /* start off the screen */
+}
+
+/* Responsive Mobile */
+@media (max-width: 640px) {
+  .sidebar {
+    width: 100%;
+  }
+  .sidebar.closed {
+    margin-left: -100%;
+  }
+}
