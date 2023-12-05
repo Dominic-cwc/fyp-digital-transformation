@@ -1,5 +1,5 @@
 import Login from "../components/component/login";
-import MainPage from "../components/component/main-page";
+import MainPageContainer from "../components/component/MainContainer";
 import { useEffect, useContext } from "react";
 import { UserContext } from "@/context/UserContext";
 
@@ -9,7 +9,7 @@ export default function index() {
   return (
     <>
       {user ? (
-        <MainPage user={user} logout={logout} />
+        <MainPageContainer user={user} logout={logout} />
       ) : (
         <Login setUser={setUser} />
       )}

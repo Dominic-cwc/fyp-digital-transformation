@@ -1,9 +1,9 @@
 //React
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 
 //components
 import { Button } from "@/components/ui/button";
-import { IconMenu, IconClose, IconLogout } from "./icon";
+import { IconMenu, IconClose } from "./icon";
 import SideBar from "./sidebar";
 
 export default function MainPage({ user, logout }) {
@@ -25,6 +25,7 @@ export default function MainPage({ user, logout }) {
           <SideBar
             isSidebarOpen={isSidebarOpen}
             setCurrentPage={setCurrentPage}
+            userRole={user.role}
           />
           <div className="w-full flex flex-col overflow-hidden">
             <header className="flex items-center justify-between flex-shrink-0 px-4 py-2 bg-gray-300 border-b">
