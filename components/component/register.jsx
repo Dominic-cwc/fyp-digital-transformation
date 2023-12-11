@@ -24,13 +24,10 @@ import axios from "axios";
 export default function register() {
   const [role, setRole] = useState("");
   const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [registerunSuccess, setRegisterunSuccess] = useState("");
   const [resgistering, setResgistering] = useState(false);
-
-  useEffect(() => {
-    console.log("hi");
-  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -66,6 +63,18 @@ export default function register() {
               required
               type="text"
               onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="name" className="font-semibold">
+              Personal Name
+            </Label>
+            <Input
+              id="name"
+              className="focus:ring-gray-400"
+              required
+              type="text"
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div className="space-y-2">
@@ -115,6 +124,7 @@ export default function register() {
               axios
                 .post("/api/register", {
                   username: username,
+                  name: name,
                   password: password,
                   role: role,
                 })
