@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { IconMenu, IconClose } from "./icon";
 import SideBar from "./sidebar";
+import Proposal from "./proposalTemplate";
 
 export default function MainPage({ user, logout }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -55,13 +56,19 @@ export default function MainPage({ user, logout }) {
               </Button>
             </header>
             <main className="flex-1 overflow-y-auto p-4">
-              <h1 className="text-lg font-semibold">Welcome back, User!</h1>
-              <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
-                <p>1</p>
-                <p>2</p>
-                <p>3</p>
-                <p>4</p>
-              </div>
+              {currentPage == "Home" ? (
+                <div>
+                  <h1 className="text-lg font-semibold">Welcome back, User!</h1>
+                  <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
+                    <p>1</p>
+                    <p>2</p>
+                    <p>3</p>
+                    <p>4</p>
+                  </div>
+                </div>
+              ) : null}
+
+              {currentPage == "Create Proposal" ? <Proposal /> : null}
             </main>
           </div>
         </div>
