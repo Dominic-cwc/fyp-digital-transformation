@@ -109,8 +109,14 @@ export default function register() {
                   <SelectItem className="hover:bg-gray-200" value="staff">
                     Staff
                   </SelectItem>
-                  <SelectItem className="hover:bg-gray-200" value="manager">
-                    Manager
+                  <SelectItem className="hover:bg-gray-200" value="deptmanager">
+                    Department Manager
+                  </SelectItem>
+                  <SelectItem
+                    className="hover:bg-gray-200"
+                    value="centermanager"
+                  >
+                    Center Manager
                   </SelectItem>
                 </SelectGroup>
               </SelectContent>
