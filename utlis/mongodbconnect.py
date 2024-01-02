@@ -6,8 +6,4 @@ load_dotenv(dotenv_path="./.env.local")
 
 uri = os.getenv("MONGODB_URI")
 client = MongoClient(uri)
-database = None
-
-def connect():
-    global database
-    database = client["FYP-Project"]
+database = client["FYP-Project"]
