@@ -1,6 +1,4 @@
 from pymongo.mongo_client import MongoClient
-
-# parse env
 import os
 from dotenv import load_dotenv
 
