@@ -26,7 +26,7 @@ export async function updateData(query, update, collectionName) {
   return result;
 }
 
-async function deleteData(query, collectionName) {
+export async function deleteData(query, collectionName) {
   await require("./mongodbconnect.js");
   const collection = global.database.collection(collectionName);
   const result = await collection.deleteOne(query);
