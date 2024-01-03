@@ -6,7 +6,7 @@ export default async function handler(req, res) {
       //check if username exist
       fetchData(
         {
-          $or: [{ role: "staff" }, { role: "manager" }],
+          $or: [{ role: "centermanager" }, { role: "deptmanager" }],
         },
         "Users"
       ).then((result) => {

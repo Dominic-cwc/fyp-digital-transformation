@@ -10,13 +10,34 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function login({ setUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginstatus, setLoginstatus] = useState("");
   const [loggingin, setLoggingin] = useState(false);
+
+  const login = () => {
+    setLoggingin(true);
+    axios
+      .post("http://localhost:3000/api/login", {
+        username: username,
+        password: password,
+      })
+      .then((res) => {
+        if (res.data.message === "Please fill in all fields") {
+          setLoginstatus(res.data.message);
+        } else if (res.data.message === "Username or password is incorrect") {
+          setLoginstatus(res.data.message);
+        } else {
+          setLoginstatus("");
+          setLoggingin(false);
+          setUser(res.data);
+        }
+        setLoggingin(false);
+      });
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -27,11 +48,11 @@ export default function login({ setUser }) {
         }}
       >
         <CardHeader className="space-y-1">
-          <h1 className="text-3xl font-extrabold mb-4 text-center">
+          <h1 className="text-3xl font-bold mb-4 text-center">
             DECC System V1.0
           </h1>
 
-          <CardTitle className="text-2xl font-extrabold">Login</CardTitle>
+          <CardTitle className="text-2xl font-bold">Login</CardTitle>
           <CardDescription className="text-gray-500">
             Please enter your username and password to login.
           </CardDescription>
@@ -66,29 +87,9 @@ export default function login({ setUser }) {
               />
             </div>
             <Button
+              id="loginbtn"
               className="w-full bg-gray-950 text-white font-semibold"
-              onClick={() => {
-                setLoggingin(true);
-                axios
-                  .post("http://localhost:3000/api/login", {
-                    username: username,
-                    password: password,
-                  })
-                  .then((res) => {
-                    if (res.data.message === "Please fill in all fields") {
-                      setLoginstatus(res.data.message);
-                    } else if (
-                      res.data.message === "Username or password is incorrect"
-                    ) {
-                      setLoginstatus(res.data.message);
-                    } else {
-                      setLoginstatus("");
-                      setLoggingin(false);
-                      setUser(res.data);
-                    }
-                    setLoggingin(false);
-                  });
-              }}
+              onClick={login}
             >
               {loggingin ? (
                 <img src="icons/loading.gif" className="w-7 h-7" />

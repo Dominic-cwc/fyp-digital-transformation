@@ -38,7 +38,7 @@ export default function register() {
         }}
       >
         <CardHeader>
-          <CardTitle className="text-2xl font-extrabold">Register</CardTitle>
+          <CardTitle className="text-2xl font-bold">Register</CardTitle>
           <CardDescription className="text-gray-500">
             Please enter your details to create an account.
           </CardDescription>

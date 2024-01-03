@@ -2,6 +2,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  SelectValue,
+  SelectTrigger,
+  SelectItem,
+  SelectGroup,
+  SelectContent,
+  Select,
+} from "@/components/ui/select";
 
 export default function Proposal() {
   const eventTypes = [
@@ -60,6 +69,18 @@ export default function Proposal() {
     others: false,
     othersname: "",
   });
+  const [eventpurpose, setEventpurpose] = useState("");
+  const [eventevaluate, setEventevaluate] = useState("");
+  const [eventpurposedetail, setEventpurposedetail] = useState("");
+  const [pagetwonote, setPagetwonote] = useState("");
+  const [eventrevenue, setEventrevenue] = useState("");
+  const [eventbudget, setEventbudget] = useState("");
+  const [pagethreenote, setPagethreenote] = useState("");
+
+  const [managerlist, setManagerlist] = useState([]);
+  const [deptmanager, setDeptmanager] = useState("");
+  const [centermanager, setCentermanager] = useState("");
+  const [abletosubmit, setAbletosubmit] = useState(true);
 
   const handleCheckChange = (event) => {
     if (event.target.checked) {
@@ -171,11 +192,199 @@ export default function Proposal() {
   };
 
   useEffect(() => {
-    console.log(checkedItems);
-  }, [checkedItems]);
+    axios.get("/api/getAllManagers").then((res) => {
+      setManagerlist(res.data);
+    });
+  }, []);
+
+  const addToProposalContent = () => {
+    setProposalContent((prevState) => ({
+      ...prevState,
+      eventName: eventName,
+      eventTypes: checkedItems,
+      decc8: decc8Content,
+      decc4: decc4Content,
+      decc5: decc5Content,
+      eventDate: eventDate,
+      eventWeek: eventWeek,
+      eventTime: eventTime,
+      eventNum: eventNum,
+      eventLocation: eventLocation,
+      eventTarget: eventTarget,
+      eventQuota: eventQuota,
+      eventFee: eventFee,
+      eventTutor: eventTutor,
+      eventStaffNum: eventStaffNum,
+      eventElderlyNum: eventElderlyNum,
+      eventOthersNum: eventOthersNum,
+      eventApplicant: eventApplicant,
+      deptmanager: deptmanager,
+      centermanager: centermanager,
+      eventpurpose: eventpurpose,
+      eventevaluate: eventevaluate,
+      eventpurposedetail: eventpurposedetail,
+      pagetwonote: pagetwonote,
+      eventrevenue: eventrevenue,
+      eventbudget: eventbudget,
+      pagethreenote: pagethreenote,
+    }));
+  };
+
+  const cleanData = () => {
+    setCheckedItems([]);
+    setDecc8(false);
+    setDecc4(false);
+    setDecc5(false);
+    setProposalContent({});
+    setEventName("");
+    setDecc8Content("");
+    setDecc4Content("");
+    setDecc5Content("");
+    setEventDate("");
+    setEventWeek("");
+    setEventTime("");
+    setEventNum("");
+    setEventLocation("");
+    setEventTarget("");
+    setEventQuota("");
+    setEventFee("");
+    setEventTutor("");
+    setEventStaffNum("");
+    setEventElderlyNum("");
+    setEventOthersNum("");
+    setEventApplicant({
+      member: false,
+      nonmember: false,
+      others: false,
+      othersname: "",
+    });
+    setPage(1);
+  };
+  const submitProposal = () => {
+    axios.post("/api/submitProposal", proposalContent).then((res) => {
+      if (res.data.message == "Proposal submitted") {
+        cleanData();
+        alert("Proposal submitted");
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (checkInputtedContent()) {
+      setAbletosubmit(true);
+      submitProposal();
+    } else if (Object.keys(proposalContent).length > 0) {
+      setAbletosubmit(false);
+    }
+  }, [proposalContent]);
+
+  const checkInputtedContent = () => {
+    if (eventName == "") {
+      return false;
+    } else if (checkedItems.length == 0) {
+      return false;
+    } else if (decc8 && decc8Content == "") {
+      return false;
+    } else if (decc4 && decc4Content == "") {
+      return false;
+    } else if (decc5 && decc5Content == "") {
+      return false;
+    } else if (eventDate == "") {
+      return false;
+    } else if (eventWeek == "") {
+      return false;
+    } else if (eventTime == "") {
+      return false;
+    } else if (eventNum == "") {
+      return false;
+    } else if (eventLocation == "") {
+      return false;
+    } else if (eventTarget == "") {
+      return false;
+    } else if (eventQuota == "") {
+      return false;
+    } else if (eventFee == "") {
+      return false;
+    } else if (eventTutor == "") {
+      return false;
+    } else if (eventStaffNum == "") {
+      return false;
+    } else if (!eventElderlyNum && /^\s*$/.test(eventElderlyNum)) {
+      // test by regex, can't only contain space
+      return false;
+    } else if (!eventOthersNum && /^\s*$/.test(eventOthersNum)) {
+      return false;
+    } else if (
+      eventApplicant.member == false &&
+      eventApplicant.nonmember == false &&
+      eventApplicant.others == false
+    ) {
+      return false;
+    } else if (
+      eventApplicant.others == true &&
+      eventApplicant.othersname == ""
+    ) {
+      return false;
+    } else if (deptmanager == "") {
+      return false;
+    } else if (centermanager == "") {
+      return false;
+    } else {
+      return true;
+    }
+  };
 
   return (
     <div>
+      <div className="flex flex-row">
+        <Label htmlFor="deptmanager" className="text-sm  md:text-base">
+          部門經理<span className="text-red-500">*</span>：
+        </Label>
+        <Select onValueChange={(value) => setDeptmanager(value)}>
+          <SelectTrigger className="focus:ring-gray-400 w-1/4 mb-2">
+            <SelectValue placeholder="請選擇部門經理" />
+          </SelectTrigger>
+          <SelectContent className="bg-white">
+            <SelectGroup>
+              {managerlist.map((item) => {
+                if (item.role == "deptmanager") {
+                  return (
+                    <SelectItem key={item.username} value={item.username}>
+                      {item.name}
+                    </SelectItem>
+                  );
+                }
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="flex flex-row">
+        <Label htmlFor="centermanager" className="text-sm  md:text-base">
+          中心經理<span className="text-red-500">*</span>：
+        </Label>
+        <Select onValueChange={(value) => setCentermanager(value)}>
+          <SelectTrigger className="focus:ring-gray-400 w-1/4 mb-2">
+            <SelectValue placeholder="請選擇中心經理" />
+          </SelectTrigger>
+          <SelectContent className="bg-white">
+            <SelectGroup>
+              {managerlist.map((item) => {
+                if (item.role == "centermanager") {
+                  return (
+                    <SelectItem key={item.username} value={item.username}>
+                      {item.name}
+                    </SelectItem>
+                  );
+                }
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+      {!abletosubmit ? (
+        <div className="text-red-500">請填寫所有帶有*的資料</div>
+      ) : null}
       {page == 1 ? (
         <div
           id="甲部"
@@ -185,7 +394,7 @@ export default function Proposal() {
           <div>
             <div className="flex flex-row">
               <Label htmlFor="eventname" className="text-sm  md:text-base">
-                活動名稱：
+                活動名稱<span className="text-red-500">*</span>：
               </Label>
               <Input
                 id="eventname"
@@ -201,7 +410,7 @@ export default function Proposal() {
                 htmlFor="eventtypes"
                 className="text-sm md:text-base w-2/12"
               >
-                性質：
+                性質<span className="text-red-500">*</span>：
               </Label>
               <table id="eventtypes">
                 <tbody className="grid gap-4 md:grid-cols-2">
@@ -225,7 +434,7 @@ export default function Proposal() {
             {decc8 ? (
               <div className="flex flex-row mt-1">
                 <Label htmlFor="decc8" className="text-sm  md:text-base">
-                  支援培訓活動 DECC 8：
+                  支援培訓活動 DECC 8<span className="text-red-500">*</span>：
                 </Label>
                 <Input
                   id="decc8"
@@ -241,7 +450,8 @@ export default function Proposal() {
             {decc4 ? (
               <div className="flex flex-row mt-1">
                 <Label htmlFor="decc4" className="text-sm  md:text-base">
-                  長者會員協助策劃及推行 DECC 4/NEC 4：
+                  長者會員協助策劃及推行 DECC 4/NEC 4
+                  <span className="text-red-500">*</span>：
                 </Label>
                 <Input
                   id="decc4"
@@ -257,7 +467,8 @@ export default function Proposal() {
             {decc5 ? (
               <div className="flex flex-row mt-1 mb-1">
                 <Label htmlFor="decc5" className="text-sm  md:text-base">
-                  減輕護老壓力 DECC 5/NEC 5：
+                  減輕護老壓力 DECC 5/NEC 5
+                  <span className="text-red-500">*</span>：
                 </Label>
                 <Input
                   id="decc5"
@@ -275,7 +486,10 @@ export default function Proposal() {
                 if (item == "義工人數") {
                   return (
                     <div key={item} className="flex flex-row w-full">
-                      <Label className="text-sm md:text-base">{item}：</Label>
+                      <Label className="text-sm md:text-base">
+                        {item}
+                        <span className="text-red-500">*</span>：
+                      </Label>
                       <Label
                         htmlFor="elderlynum"
                         className="text-sm md:text-base"
@@ -284,7 +498,7 @@ export default function Proposal() {
                       </Label>
                       <Input
                         id="elderlynum"
-                        className="focus:ring-gray-400 ml-2 w-1/12 h-8"
+                        className="focus:ring-gray-400 ml-2 w-1/6 h-8"
                         required
                         type="text"
                         value={eventElderlyNum}
@@ -300,7 +514,7 @@ export default function Proposal() {
                       </Label>
                       <Input
                         id="othersnum"
-                        className="focus:ring-gray-400 ml-2 w-1/12 h-8"
+                        className="focus:ring-gray-400 ml-2 w-1/6 h-8"
                         required
                         type="text"
                         value={eventOthersNum}
@@ -313,7 +527,10 @@ export default function Proposal() {
                 } else if (item == "參加者類別") {
                   return (
                     <div key={item} className="flex flex-row w-full">
-                      <Label className="text-sm md:text-base">{item}：</Label>
+                      <Label className="text-sm md:text-base">
+                        {item}
+                        <span className="text-red-500">*</span>：
+                      </Label>
 
                       <input
                         id="member"
@@ -357,10 +574,13 @@ export default function Proposal() {
                         className="mt-1 text-sm  md:text-base"
                       >
                         其他
+                        {eventApplicant.others ? (
+                          <span className="text-red-500">*</span>
+                        ) : null}
                       </Label>
                       <Input
                         id="othersname"
-                        className="focus:ring-gray-400 ml-2 w-1/12 h-8"
+                        className="focus:ring-gray-400 ml-2 md:w-1/4 w-1/6 h-8"
                         required
                         type="text"
                         value={eventApplicant.othersname}
@@ -374,7 +594,8 @@ export default function Proposal() {
                   return (
                     <div key={item} className="flex flex-row w-full">
                       <Label htmlFor={item} className="text-sm md:text-base">
-                        {item}：
+                        {item}
+                        <span className="text-red-500">*</span>：
                       </Label>
                       <Input
                         id={item}
@@ -394,7 +615,6 @@ export default function Proposal() {
           </div>
         </div>
       ) : null}
-
       {page == 2 ? (
         <div
           id="乙部"
@@ -404,38 +624,28 @@ export default function Proposal() {
           <div>
             <div className="flex flex-row">
               <Label htmlFor="eventpurpose" className="text-sm  md:text-base">
-                目的：
+                目的<span className="text-red-500">*</span>：
               </Label>
               <textarea
                 id="eventpurpose"
                 className="ring-2 ring-gray-400 w-1/2 ml-20 mb-2 h-32"
                 required
                 type="text"
-                value={proposalContent.eventpurpose}
-                onChange={(e) =>
-                  setProposalContent((prevState) => ({
-                    ...prevState,
-                    eventpurpose: e.target.value,
-                  }))
-                }
+                value={eventpurpose}
+                onChange={(e) => setEventpurpose(e.target.value)}
               />
             </div>
             <div className="flex flex-row">
               <Label htmlFor="eventevaluate" className="text-sm  md:text-base">
-                評估指標/方法：
+                評估指標/方法<span className="text-red-500">*</span>：
               </Label>
               <textarea
                 id="eventpurpose"
                 className="ring-2 ring-gray-400 w-1/2 ml-2 mb-2 h-32"
                 required
                 type="text"
-                value={proposalContent.eventevaluate}
-                onChange={(e) =>
-                  setProposalContent((prevState) => ({
-                    ...prevState,
-                    eventevaluate: e.target.value,
-                  }))
-                }
+                value={eventevaluate}
+                onChange={(e) => setEventevaluate(e.target.value)}
               />
             </div>
             <div className="flex flex-row">
@@ -443,20 +653,15 @@ export default function Proposal() {
                 htmlFor="eventpurposedetail"
                 className="text-sm  md:text-base"
               >
-                內容大要：
+                內容大要<span className="text-red-500">*</span>：
               </Label>
               <textarea
                 id="eventpurposedetail"
                 className="ring-2 ring-gray-400 w-1/2 ml-12 mb-2 h-32"
                 required
                 type="text"
-                value={proposalContent.eventpurposedetail}
-                onChange={(e) =>
-                  setProposalContent((prevState) => ({
-                    ...prevState,
-                    eventpurposedetail: e.target.value,
-                  }))
-                }
+                value={eventpurposedetail}
+                onChange={(e) => setEventpurposedetail(e.target.value)}
               />
             </div>
             <div className="flex flex-row">
@@ -468,19 +673,13 @@ export default function Proposal() {
                 className="ring-2 ring-gray-400 w-1/2 ml-20 mb-2 h-32"
                 required
                 type="text"
-                value={proposalContent.pagetwonote}
-                onChange={(e) =>
-                  setProposalContent((prevState) => ({
-                    ...prevState,
-                    pagetwonote: e.target.value,
-                  }))
-                }
+                value={pagetwonote}
+                onChange={() => setPagetwonote(pagetwonote)}
               />
             </div>
           </div>
         </div>
       ) : null}
-
       {page == 3 ? (
         <div
           id="丙部"
@@ -490,38 +689,28 @@ export default function Proposal() {
           <div>
             <div className="flex flex-row">
               <Label htmlFor="eventrevenue" className="text-sm  md:text-base">
-                收入：
+                收入<span className="text-red-500">*</span>：
               </Label>
               <textarea
                 id="eventrevenue"
                 className="ring-2 ring-gray-400 w-1/2 ml-20 mb-2 h-32"
                 required
                 type="text"
-                value={proposalContent.eventrevenue}
-                onChange={(e) =>
-                  setProposalContent((prevState) => ({
-                    ...prevState,
-                    eventrevenue: e.target.value,
-                  }))
-                }
+                value={eventrevenue}
+                onChange={(e) => setEventrevenue(e.target.value)}
               />
             </div>
             <div className="flex flex-row">
               <Label htmlFor="eventbudget" className="text-sm  md:text-base">
-                支出：
+                支出<span className="text-red-500">*</span>：
               </Label>
               <textarea
                 id="eventbudget"
                 className="ring-2 ring-gray-400 w-1/2 ml-20 mb-2 h-32"
                 required
                 type="text"
-                value={proposalContent.eventbudget}
-                onChange={(e) =>
-                  setProposalContent((prevState) => ({
-                    ...prevState,
-                    eventbudget: e.target.value,
-                  }))
-                }
+                value={eventbudget}
+                onChange={(e) => setEventbudget(e.target.value)}
               />
             </div>
             <div className="flex flex-row">
@@ -533,19 +722,25 @@ export default function Proposal() {
                 className="ring-2 ring-gray-400 w-1/2 ml-20 mb-2 h-32"
                 required
                 type="text"
-                value={proposalContent.pagethreenote}
-                onChange={(e) =>
-                  setProposalContent((prevState) => ({
-                    ...prevState,
-                    pagethreenote: e.target.value,
-                  }))
-                }
+                value={pagethreenote}
+                onChange={(e) => setPagethreenote(e.target.value)}
               />
             </div>
           </div>
+          <div className="flex flex-row">
+            <Button
+              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+              onClick={() => {
+                addToProposalContent();
+              }}
+            >
+              提交
+            </Button>
+          </div>
         </div>
-      ) : null}
+      ) : // submit button
 
+      null}
       <div className="flex flex-row justify-between">
         <Button
           id="prev"
