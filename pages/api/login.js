@@ -23,6 +23,9 @@ export default async function handler(req, res) {
           //username exist
           if (result[0].password === crypto.SHA256(password).toString()) {
             //password correct
+            delete result[0].password;
+            delete result[0]._id;
+
             res.status(200).json(result[0]);
           } else {
             //password incorrect

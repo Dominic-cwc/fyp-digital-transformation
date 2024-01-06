@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { IconMenu, IconClose } from "./icon";
 import SideBar from "./sidebar";
 import Proposal from "./proposalTemplate";
+import ReviewProposalTable from "./reviewProposalTable";
 
 export default function MainPage({ user, logout }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -22,13 +23,13 @@ export default function MainPage({ user, logout }) {
   return (
     <>
       {user && (
-        <div className="flex h-screen overflow-hidden">
+        <div className="flex h-screen">
           <SideBar
             isSidebarOpen={isSidebarOpen}
             setCurrentPage={setCurrentPage}
             user={user}
           />
-          <div className="w-full flex flex-col overflow-hidden">
+          <div className="w-full flex flex-col">
             <header className="flex items-center justify-between flex-shrink-0 px-4 py-2 bg-gray-300 border-b">
               <Button
                 className={
@@ -68,7 +69,16 @@ export default function MainPage({ user, logout }) {
                 </div>
               ) : null}
 
-              {currentPage == "Create Proposal" ? <Proposal /> : null}
+              {currentPage == "Create Proposal" ? (
+                <Proposal user={user} />
+              ) : null}
+
+              {currentPage == "Review Proposal" ? (
+                <ReviewProposalTable
+                  username={user.username}
+                  role={user.role}
+                />
+              ) : null}
             </main>
           </div>
         </div>

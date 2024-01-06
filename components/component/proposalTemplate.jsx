@@ -12,7 +12,7 @@ import {
   Select,
 } from "@/components/ui/select";
 
-export default function Proposal() {
+export default function Proposal({ user }) {
   const eventTypes = [
     "社交及康樂 DECC 3b/NEC 3a(iii)",
     "長者教育/發展 DECC 3a(i)/NEC3a(ii)",
@@ -78,9 +78,10 @@ export default function Proposal() {
   const [pagethreenote, setPagethreenote] = useState("");
 
   const [managerlist, setManagerlist] = useState([]);
-  const [deptmanager, setDeptmanager] = useState("");
-  const [centermanager, setCentermanager] = useState("");
+  const [deptmanager, setDeptmanager] = useState(null);
+  const [centermanager, setCentermanager] = useState(null);
   const [abletosubmit, setAbletosubmit] = useState(true);
+  const [clickedSubmit, setClickedSubmit] = useState(false);
 
   const handleCheckChange = (event) => {
     if (event.target.checked) {
@@ -218,8 +219,14 @@ export default function Proposal() {
       eventElderlyNum: eventElderlyNum,
       eventOthersNum: eventOthersNum,
       eventApplicant: eventApplicant,
-      deptmanager: deptmanager,
-      centermanager: centermanager,
+      deptmanager: {
+        username: deptmanager ? deptmanager.split(/\s(.+)/)[0] : null,
+        personalname: deptmanager ? deptmanager.split(/\s(.+)/)[1] : null,
+      },
+      centermanager: {
+        username: centermanager ? centermanager.split(/\s(.+)/)[0] : null,
+        personalname: centermanager ? centermanager.split(/\s(.+)/)[1] : null,
+      },
       eventpurpose: eventpurpose,
       eventevaluate: eventevaluate,
       eventpurposedetail: eventpurposedetail,
@@ -227,6 +234,7 @@ export default function Proposal() {
       eventrevenue: eventrevenue,
       eventbudget: eventbudget,
       pagethreenote: pagethreenote,
+      createdby: { username: user.username, personalname: user.name },
     }));
   };
 
@@ -259,12 +267,19 @@ export default function Proposal() {
       othersname: "",
     });
     setPage(1);
+    setEventpurpose("");
+    setEventevaluate("");
+    setEventpurposedetail("");
+    setPagetwonote("");
+    setEventrevenue("");
+    setEventbudget("");
+    setPagethreenote("");
   };
   const submitProposal = () => {
     axios.post("/api/submitProposal", proposalContent).then((res) => {
       if (res.data.message == "Proposal submitted") {
         cleanData();
-        alert("Proposal submitted");
+        alert("提交成功");
       }
     });
   };
@@ -309,10 +324,16 @@ export default function Proposal() {
       return false;
     } else if (eventStaffNum == "") {
       return false;
-    } else if (!eventElderlyNum && /^\s*$/.test(eventElderlyNum)) {
+    } else if (
+      (!eventElderlyNum && /^\s*$/.test(eventElderlyNum)) ||
+      eventElderlyNum == ""
+    ) {
       // test by regex, can't only contain space
       return false;
-    } else if (!eventOthersNum && /^\s*$/.test(eventOthersNum)) {
+    } else if (
+      (!eventOthersNum && /^\s*$/.test(eventOthersNum)) ||
+      eventOthersNum == ""
+    ) {
       return false;
     } else if (
       eventApplicant.member == false &&
@@ -325,9 +346,9 @@ export default function Proposal() {
       eventApplicant.othersname == ""
     ) {
       return false;
-    } else if (deptmanager == "") {
+    } else if (deptmanager == null) {
       return false;
-    } else if (centermanager == "") {
+    } else if (centermanager == null) {
       return false;
     } else {
       return true;
@@ -336,6 +357,60 @@ export default function Proposal() {
 
   return (
     <div>
+      {clickedSubmit ? (
+        <div
+          className="fixed z-10 inset-0 overflow-y-auto"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div
+              className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+              aria-hidden="true"
+              onClick={() => setClickedSubmit(false)}
+            ></div>
+
+            <span
+              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              aria-hidden="true"
+            >
+              ​
+            </span>
+
+            <div
+              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="modal-headline"
+            >
+              <div className="h-36 flex items-center justify-center  bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="flex flex-col items-center justify-center">
+                  <div className="mb-5">確定要提交提案？</div>
+                  <div className="flex flex-row">
+                    <Button
+                      className="bg-gray-400 transition-all duration-300 ease-in-out hover:bg-green-400"
+                      onClick={() => {
+                        setClickedSubmit(false);
+                        addToProposalContent();
+                      }}
+                    >
+                      確定
+                    </Button>
+                    <Button
+                      className="bg-gray-400 transition-all duration-300 ease-in-out hover:bg-red-400 ml-2"
+                      onClick={() => setClickedSubmit(false)}
+                    >
+                      取消
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       <div className="flex flex-row">
         <Label htmlFor="deptmanager" className="text-sm  md:text-base">
           部門經理<span className="text-red-500">*</span>：
@@ -346,10 +421,16 @@ export default function Proposal() {
           </SelectTrigger>
           <SelectContent className="bg-white">
             <SelectGroup>
+              <SelectItem key="default" value={null}>
+                請選擇部門經理
+              </SelectItem>
               {managerlist.map((item) => {
                 if (item.role == "deptmanager") {
                   return (
-                    <SelectItem key={item.username} value={item.username}>
+                    <SelectItem
+                      key={item.username}
+                      value={item.username + " " + item.name}
+                    >
                       {item.name}
                     </SelectItem>
                   );
@@ -369,10 +450,16 @@ export default function Proposal() {
           </SelectTrigger>
           <SelectContent className="bg-white">
             <SelectGroup>
+              <SelectItem key="default" value={null}>
+                請選擇中心經理
+              </SelectItem>
               {managerlist.map((item) => {
                 if (item.role == "centermanager") {
                   return (
-                    <SelectItem key={item.username} value={item.username}>
+                    <SelectItem
+                      key={item.username}
+                      value={item.username + " " + item.name}
+                    >
                       {item.name}
                     </SelectItem>
                   );
@@ -731,7 +818,7 @@ export default function Proposal() {
             <Button
               className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
               onClick={() => {
-                addToProposalContent();
+                setClickedSubmit(true);
               }}
             >
               提交

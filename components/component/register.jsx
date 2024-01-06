@@ -50,6 +50,10 @@ export default function register() {
             <CardDescription className="text-red-500">
               Please fill in all fields
             </CardDescription>
+          ) : registerunSuccess != "" ? (
+            <CardDescription className="text-red-500">
+              {registerunSuccess}
+            </CardDescription>
           ) : null}
         </CardHeader>
         <CardContent className="space-y-4">
@@ -125,7 +129,15 @@ export default function register() {
           <Button
             className="w-full bg-gray-950 text-white font-semibold"
             onClick={() => {
-              console.log(username, password, role);
+              if (username.includes(" ") || password.includes(" ")) {
+                setRegisterunSuccess(
+                  "Username and Password should not contain space."
+                );
+                return;
+              } else if (/^\s*$/.test(name)) {
+                setRegisterunSuccess("Please enter correct personal name.");
+                return;
+              }
               setResgistering(true);
               axios
                 .post("/api/register", {

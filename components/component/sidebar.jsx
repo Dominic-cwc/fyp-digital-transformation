@@ -44,7 +44,9 @@ export default function SideBar({ isSidebarOpen, setCurrentPage, user }) {
           </Link>
         ) : null}
 
-        {user.role == "manager" || user.role == "staff" ? (
+        {user.role == "deptmanager" ||
+        user.role == "centermanager" ||
+        user.role == "staff" ? (
           <Link
             className="group flex items-center px-4 py-2 text-sm"
             href="/"

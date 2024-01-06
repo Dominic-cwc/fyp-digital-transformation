@@ -9,9 +9,15 @@ export default async function handler(req, res) {
     }
 
     proposal.status = "pending";
+    proposal.timestamp = new Date().toISOString();
+    proposal.deptcomment = "";
+    proposal.centercomment = "";
 
     insertData(proposal, "Proposals").then((result) => {
       res.status(200).json({ message: "Proposal submitted" });
+      return new Promise((resolve, reject) => {
+        resolve(result);
+      });
     });
   }
 }
