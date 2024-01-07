@@ -1,14 +1,19 @@
 import { ObjectId } from "mongodb";
 
 export async function fetchData(query, collectionName) {
-  await require("./mongodbconnect.js");
+  if (global.database === undefined) {
+    await require("./mongodbconnect.js");
+  }
+
   const collection = global.database.collection(collectionName);
   const result = await collection.find(query).toArray();
   return result;
 }
 
 export async function insertData(query, collectionName) {
-  await require("./mongodbconnect.js");
+  if (global.database === undefined) {
+    await require("./mongodbconnect.js");
+  }
   const collection = global.database.collection(collectionName);
   if (Array.isArray(query) === false) {
     const result = await collection.insertOne(query);
@@ -20,14 +25,18 @@ export async function insertData(query, collectionName) {
 }
 
 export async function updateData(query, update, collectionName) {
-  await require("./mongodbconnect.js");
+  if (global.database === undefined) {
+    await require("./mongodbconnect.js");
+  }
   const collection = global.database.collection(collectionName);
   const result = await collection.updateOne(query, update);
   return result;
 }
 
 export async function deleteData(query, collectionName) {
-  await require("./mongodbconnect.js");
+  if (global.database === undefined) {
+    await require("./mongodbconnect.js");
+  }
   const collection = global.database.collection(collectionName);
   const result = await collection.deleteOne(query);
   return result;

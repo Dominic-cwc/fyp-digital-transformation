@@ -13,6 +13,7 @@ const client = new MongoClient(uri, {
 // Connect to the MongoDB cluster
 async function connect() {
   await client.connect();
+  console.log("Connected to MongoDB");
   global.database = client.db("FYP-Project");
 }
 module.exports = connect();
