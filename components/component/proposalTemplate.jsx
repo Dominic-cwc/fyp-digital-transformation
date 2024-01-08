@@ -61,8 +61,8 @@ export default function Proposal({ user }) {
   const [eventFee, setEventFee] = useState("");
   const [eventTutor, setEventTutor] = useState("");
   const [eventStaffNum, setEventStaffNum] = useState("");
-  const [eventElderlyNum, setEventElderlyNum] = useState("");
-  const [eventOthersNum, setEventOthersNum] = useState("");
+  const [eventVolunteerElderlyNum, setEventVolunteerElderlyNum] = useState("");
+  const [eventVolunteerOthersNum, setEventVolunteerOthersNum] = useState("");
   const [eventApplicant, setEventApplicant] = useState({
     member: false,
     nonmember: false,
@@ -134,9 +134,9 @@ export default function Proposal({ user }) {
     } else if (type == "工作員人數") {
       setEventStaffNum(data);
     } else if (type == "elderlynum") {
-      setEventElderlyNum(data);
+      setEventVolunteerElderlyNum(data);
     } else if (type == "othersnum") {
-      setEventOthersNum(data);
+      setEventVolunteerOthersNum(data);
     } else if (type == "member") {
       setEventApplicant((prevState) => ({
         ...prevState,
@@ -216,8 +216,8 @@ export default function Proposal({ user }) {
       eventFee: eventFee,
       eventTutor: eventTutor,
       eventStaffNum: eventStaffNum,
-      eventElderlyNum: eventElderlyNum,
-      eventOthersNum: eventOthersNum,
+      eventVolunteerElderlyNum: eventVolunteerElderlyNum,
+      eventVolunteerOthersNum: eventVolunteerOthersNum,
       eventApplicant: eventApplicant,
       deptmanager: {
         username: deptmanager ? deptmanager.split(/\s(.+)/)[0] : null,
@@ -258,8 +258,8 @@ export default function Proposal({ user }) {
     setEventFee("");
     setEventTutor("");
     setEventStaffNum("");
-    setEventElderlyNum("");
-    setEventOthersNum("");
+    setEventVolunteerElderlyNum("");
+    setEventVolunteerOthersNum("");
     setEventApplicant({
       member: false,
       nonmember: false,
@@ -325,14 +325,14 @@ export default function Proposal({ user }) {
     } else if (eventStaffNum == "") {
       return false;
     } else if (
-      (!eventElderlyNum && /^\s*$/.test(eventElderlyNum)) ||
-      eventElderlyNum == ""
+      (!eventVolunteerElderlyNum && /^\s*$/.test(eventVolunteerElderlyNum)) ||
+      eventVolunteerElderlyNum == ""
     ) {
       // test by regex, can't only contain space
       return false;
     } else if (
-      (!eventOthersNum && /^\s*$/.test(eventOthersNum)) ||
-      eventOthersNum == ""
+      (!eventVolunteerOthersNum && /^\s*$/.test(eventVolunteerOthersNum)) ||
+      eventVolunteerOthersNum == ""
     ) {
       return false;
     } else if (
@@ -413,7 +413,7 @@ export default function Proposal({ user }) {
 
       <div className="flex flex-row">
         <Label htmlFor="deptmanager" className="text-sm  md:text-base">
-          部門經理<span className="text-red-500">*</span>：
+          致部門經理<span className="text-red-500">*</span>：
         </Label>
         <Select onValueChange={(value) => setDeptmanager(value)}>
           <SelectTrigger className="focus:ring-gray-400 w-1/4 mb-2">
@@ -442,7 +442,7 @@ export default function Proposal({ user }) {
       </div>
       <div className="flex flex-row">
         <Label htmlFor="centermanager" className="text-sm  md:text-base">
-          中心經理<span className="text-red-500">*</span>：
+          致中心經理<span className="text-red-500">*</span>：
         </Label>
         <Select onValueChange={(value) => setCentermanager(value)}>
           <SelectTrigger className="focus:ring-gray-400 w-1/4 mb-2">
@@ -588,7 +588,7 @@ export default function Proposal({ user }) {
                         className="focus:ring-gray-400 ml-2 w-1/6 h-8"
                         required
                         type="text"
-                        value={eventElderlyNum}
+                        value={eventVolunteerElderlyNum}
                         onChange={(e) =>
                           handleInputEventDetails(e.target.id, e.target.value)
                         }
@@ -604,7 +604,7 @@ export default function Proposal({ user }) {
                         className="focus:ring-gray-400 ml-2 w-1/6 h-8"
                         required
                         type="text"
-                        value={eventOthersNum}
+                        value={eventVolunteerOthersNum}
                         onChange={(e) =>
                           handleInputEventDetails(e.target.id, e.target.value)
                         }

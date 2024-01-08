@@ -5,6 +5,7 @@ import ReviewProposal from "./reviewProposal";
 export default function ReviewProposalTable({ username, role }) {
   const [proposal, setProposal] = useState([]);
   const [selectedProposal, setSelectedProposal] = useState(null);
+  const [submittedComment, setSubmittedComment] = useState(null);
 
   useEffect(() => {
     axios
@@ -23,12 +24,26 @@ export default function ReviewProposalTable({ username, role }) {
   }, []);
 
   useEffect(() => {
-    console.log(proposal[selectedProposal]);
-  }, [selectedProposal]);
-
-  useEffect(() => {
     console.log(proposal);
   }, [proposal]);
+
+  useEffect(() => {
+    if (submittedComment == null) return;
+    axios
+      .get("http://localhost:3000/api/getRelatedProposals", {
+        params: {
+          username: username,
+          role: role,
+        },
+      })
+      .then((res) => {
+        setProposal(res.data);
+        setSubmittedComment(null);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [submittedComment]);
 
   return (
     <div>
@@ -126,6 +141,7 @@ export default function ReviewProposalTable({ username, role }) {
           <ReviewProposal
             proposalContent={proposal[selectedProposal]}
             setSelectedProposal={setSelectedProposal}
+            setSubmittedComment={setSubmittedComment}
             role={role}
           />
         </div>

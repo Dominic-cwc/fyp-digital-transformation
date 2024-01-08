@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import {
   SelectValue,
@@ -16,6 +16,7 @@ export default function reviewProposal({
   proposalContent,
   setSelectedProposal,
   role,
+  setSubmittedComment,
 }) {
   const eventTypes = [
     "社交及康樂 DECC 3b/NEC 3a(iii)",
@@ -102,9 +103,26 @@ export default function reviewProposal({
           role: role,
         })
         .then((res) => {
-          console.log(res.data);
           alert("提交成功");
         });
+
+      if (role == "centermanager" && proposalStatus == "approved") {
+        axios.post("http://localhost:3000/api/createEvent", {
+          eventName: proposalContent.eventName,
+          eventTypes: proposalContent.eventTypes,
+          eventDate: proposalContent.eventDate,
+          eventWeek: proposalContent.eventWeek,
+          eventTime: proposalContent.eventTime,
+          eventNum: proposalContent.eventNum,
+          eventLocation: proposalContent.eventLocation,
+          eventTarget: proposalContent.eventTarget,
+          eventQuota: proposalContent.eventQuota,
+          eventFee: proposalContent.eventFee,
+          eventpurpose: proposalContent.eventpurpose,
+        });
+      }
+      setSubmittedComment(true);
+      setSelectedProposal(null);
     } else {
       setAbletosubmit(false);
     }
@@ -141,6 +159,8 @@ export default function reviewProposal({
             >
               <div className="h-36 flex items-center justify-center  bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="flex flex-col items-center justify-center">
+                  {}
+
                   <div className="mb-5">確定要提交提案意見？</div>
                   <div className="flex flex-row">
                     <Button
@@ -174,7 +194,8 @@ export default function reviewProposal({
         >
           返回
         </Button>
-        {proposalContent.status == "pending" ? (
+        {proposalContent.status == "pending" &&
+        (role == "deptmanager" || role == "centermanager") ? (
           <Button
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
             onClick={() => {
@@ -184,10 +205,16 @@ export default function reviewProposal({
             提交
           </Button>
         ) : null}
+
+        {proposalContent.status == "approved" && role == "staff" ? (
+          <Label className="bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-2 rounded flex justify-center items-center">
+            已通過並新增此活動
+          </Label>
+        ) : null}
       </div>
       <div className="flex flex-row">
         <Label htmlFor="deptmanager" className="text-sm  md:text-base">
-          部門經理：
+          致部門經理：
         </Label>
         <Select>
           <SelectTrigger className="focus:ring-gray-400 w-1/4 mb-2">
@@ -199,7 +226,7 @@ export default function reviewProposal({
       </div>
       <div className="flex flex-row">
         <Label htmlFor="centermanager" className="text-sm  md:text-base">
-          中心經理：
+          致中心經理：
         </Label>
         <Select onValueChange={(value) => setCentermanager(value)}>
           <SelectTrigger className="focus:ring-gray-400 w-1/4 mb-2">
@@ -319,7 +346,7 @@ export default function reviewProposal({
                         className="focus:ring-gray-400 ml-2 w-1/6 h-8"
                         required
                         type="text"
-                        value={proposalContent.eventElderlyNum}
+                        value={proposalContent.eventVolunteerElderlyNum}
                       />
                       <Label
                         htmlFor="othersnum"
@@ -332,7 +359,7 @@ export default function reviewProposal({
                         className="focus:ring-gray-400 ml-2 w-1/6 h-8"
                         required
                         type="text"
-                        value={proposalContent.eventOthersNum}
+                        value={proposalContent.eventVolunteerOthersNum}
                       />
                     </div>
                   );
@@ -652,7 +679,6 @@ export default function reviewProposal({
           <textarea
             id="centermanagerComment"
             className="ring-2 ring-gray-400 ml-5 w-1/4 mb-2 h-32"
-            required
             type="text"
             value={
               /^\s*$/.test(proposalContent.centercomment) ||

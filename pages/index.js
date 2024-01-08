@@ -7,7 +7,7 @@ export default function index() {
   const { user, setUser, logout, loading } = useContext(UserContext);
 
   return (
-    <>
+    <div className="">
       {loading ? (
         <div
           role="status"
@@ -35,6 +35,6 @@ export default function index() {
       ) : (
         <Login setUser={setUser} />
       )}
-    </>
+    </div>
   );
 }

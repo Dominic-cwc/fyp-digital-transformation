@@ -7,6 +7,7 @@ import { IconMenu, IconClose } from "./icon";
 import SideBar from "./sidebar";
 import Proposal from "./proposalTemplate";
 import ReviewProposalTable from "./reviewProposalTable";
+import ApplyEventTable from "./applyEventTable";
 
 export default function MainPage({ user, logout }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -78,6 +79,10 @@ export default function MainPage({ user, logout }) {
                   username={user.username}
                   role={user.role}
                 />
+              ) : null}
+
+              {currentPage == "Apply Event" ? (
+                <ApplyEventTable username={user.username} />
               ) : null}
             </main>
           </div>
