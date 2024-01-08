@@ -9,7 +9,7 @@ export default async function handler(req, res) {
         { _id: new ObjectId(eventID) },
         {
           $addToSet: {
-            applicants: username,
+            applicant: username,
           },
         },
         "Events"
