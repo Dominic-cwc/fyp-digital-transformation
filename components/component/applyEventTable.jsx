@@ -5,6 +5,7 @@ import ApplyEventDetail from "./applyEventDetail";
 export default function ApplyEventTable({ username }) {
   const [event, setEvent] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [submittedEvent, setSubmittedEvent] = useState(null);
 
   useEffect(() => {
     axios
@@ -17,6 +18,19 @@ export default function ApplyEventTable({ username }) {
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    if (submittedEvent == null) return;
+    axios
+      .get("http://localhost:3000/api/getAllEvents", {})
+      .then((res) => {
+        setEvent(res.data);
+        setSubmittedEvent(null);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [submittedEvent]);
 
   return (
     <div>
@@ -107,6 +121,8 @@ export default function ApplyEventTable({ username }) {
             EventDetail={event[selectedEvent]}
             setSelectedEvent={setSelectedEvent}
             ApplyStatus={event[selectedEvent].applicant.includes(username)}
+            username={username}
+            setSubmittedEvent={setSubmittedEvent}
           />
         </div>
       )}

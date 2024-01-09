@@ -10,6 +10,7 @@ export default async function handler(req, res) {
         proposalStatus,
         proposalID,
         role,
+        centerManager_username,
       } = req.body;
 
       if (role === "deptmanager") {
@@ -18,6 +19,7 @@ export default async function handler(req, res) {
           {
             $set: {
               deptcomment: deptmanagerComment,
+              currentReviewer: centerManager_username,
             },
           },
           "Proposals"

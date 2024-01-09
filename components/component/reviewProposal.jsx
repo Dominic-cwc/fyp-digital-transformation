@@ -92,7 +92,7 @@ export default function reviewProposal({
     return true;
   };
 
-  const submitProposal = () => {
+  const submitProposalComment = () => {
     if (handleInputCheck()) {
       axios
         .post("http://localhost:3000/api/submitProposalComment", {
@@ -101,6 +101,7 @@ export default function reviewProposal({
           proposalStatus: proposalStatus,
           proposalID: proposalContent._id,
           role: role,
+          centerManager_username: proposalContent.centermanager.username,
         })
         .then((res) => {
           alert("提交成功");
@@ -161,13 +162,20 @@ export default function reviewProposal({
                 <div className="flex flex-col items-center justify-center">
                   {}
 
-                  <div className="mb-5">確定要提交提案意見？</div>
+                  <div className="mb-5">
+                    {role == "deptmanager"
+                      ? "確認傳送給中心主任"
+                      : role == "centermanager"
+                      ? "確認提交意見"
+                      : null}
+                    ?
+                  </div>
                   <div className="flex flex-row">
                     <Button
                       className="bg-gray-400 transition-all duration-300 ease-in-out hover:bg-green-400"
                       onClick={() => {
                         setClickedSubmit(false);
-                        submitProposal();
+                        submitProposalComment();
                       }}
                     >
                       確定
@@ -194,21 +202,37 @@ export default function reviewProposal({
         >
           返回
         </Button>
-        {proposalContent.status == "pending" &&
-        (role == "deptmanager" || role == "centermanager") ? (
+        {proposalContent.status == "pending" && role == "deptmanager" ? (
           <Button
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
             onClick={() => {
               setClickedSubmit(true);
             }}
           >
-            提交
+            傳送給中心主任
+          </Button>
+        ) : null}
+
+        {proposalContent.status == "pending" && role == "centermanager" ? (
+          <Button
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+            onClick={() => {
+              setClickedSubmit(true);
+            }}
+          >
+            提交意見
           </Button>
         ) : null}
 
         {proposalContent.status == "approved" && role == "staff" ? (
           <Label className="bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-2 rounded flex justify-center items-center">
             已通過並新增此活動
+          </Label>
+        ) : null}
+
+        {proposalContent.status == "rejected" && role == "staff" ? (
+          <Label className="bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-2 rounded flex justify-center items-center">
+            已被拒絕
           </Label>
         ) : null}
       </div>

@@ -235,6 +235,7 @@ export default function Proposal({ user }) {
       eventbudget: eventbudget,
       pagethreenote: pagethreenote,
       createdby: { username: user.username, personalname: user.name },
+      currentReviewer: deptmanager ? deptmanager.split(/\s(.+)/)[0] : null,
     }));
   };
 
