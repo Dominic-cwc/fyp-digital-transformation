@@ -17,6 +17,7 @@ export default function reviewProposal({
   setSelectedProposal,
   role,
   setSubmittedComment,
+  username,
 }) {
   const eventTypes = [
     "社交及康樂 DECC 3b/NEC 3a(iii)",
@@ -105,23 +106,62 @@ export default function reviewProposal({
         })
         .then((res) => {
           alert("提交成功");
+          if (role == "deptmanager") {
+            axios.post("/api/sendNotification", {
+              receiver: proposalContent.centermanager.username,
+              title: "查看/審核: 新的提案",
+              content: `${proposalContent.deptmanager.personalname} 轉遞了一個由${proposalContent.createdby.personalname}建立的新提案 "${proposalContent.eventName}" 給您，請盡快查看並審核。`,
+              checked: false,
+              flag: "red",
+              forUser: false,
+            });
+          }
         });
 
       if (role == "centermanager" && proposalStatus == "approved") {
-        axios.post("http://localhost:3000/api/createEvent", {
-          eventName: proposalContent.eventName,
-          eventTypes: proposalContent.eventTypes,
-          eventDate: proposalContent.eventDate,
-          eventWeek: proposalContent.eventWeek,
-          eventTime: proposalContent.eventTime,
-          eventNum: proposalContent.eventNum,
-          eventLocation: proposalContent.eventLocation,
-          eventTarget: proposalContent.eventTarget,
-          eventQuota: proposalContent.eventQuota,
-          eventFee: proposalContent.eventFee,
-          eventpurpose: proposalContent.eventpurpose,
+        axios
+          .post("http://localhost:3000/api/createEvent", {
+            eventName: proposalContent.eventName,
+            eventTypes: proposalContent.eventTypes,
+            eventDate: proposalContent.eventDate,
+            eventWeek: proposalContent.eventWeek,
+            eventTime: proposalContent.eventTime,
+            eventNum: proposalContent.eventNum,
+            eventLocation: proposalContent.eventLocation,
+            eventTarget: proposalContent.eventTarget,
+            eventQuota: proposalContent.eventQuota,
+            eventFee: proposalContent.eventFee,
+            eventpurpose: proposalContent.eventpurpose,
+          })
+          .then(() => {
+            axios.post("/api/sendNotification", {
+              receiver: proposalContent.createdby.personalname,
+              title: "回覆: 提案: " + proposalContent.eventName,
+              content: `${proposalContent.centermanager.personalname} 已經批准您的提案 "${proposalContent.eventName}" 並新增了這個活動。`,
+              checked: false,
+              flag: "blue",
+              forUser: false,
+            });
+
+            axios.post("/api/sendNotification", {
+              receiver: null,
+              title: "新增活動: " + proposalContent.eventName,
+              content: `新活動 "${proposalContent.eventName}" 開始接受報名。`,
+              checked: true,
+              flag: "none",
+              forUser: true,
+            });
+          });
+      } else if (role == "centermanager" && proposalStatus == "rejected") {
+        axios.post("/api/sendNotification", {
+          receiver: proposalContent.createdby.personalname,
+          title: "回覆: 提案: " + proposalContent.eventName,
+          content: `${proposalContent.centermanager.personalname} 已經拒絕了您的提案 "${proposalContent.eventName}"。`,
+          checked: false,
+          flag: "red",
         });
       }
+
       setSubmittedComment(true);
       setSelectedProposal(null);
     } else {
@@ -202,7 +242,9 @@ export default function reviewProposal({
         >
           返回
         </Button>
-        {proposalContent.status == "pending" && role == "deptmanager" ? (
+        {proposalContent.status == "pending" &&
+        role == "deptmanager" &&
+        proposalContent.currentReviewer == username ? (
           <Button
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
             onClick={() => {
@@ -211,6 +253,14 @@ export default function reviewProposal({
           >
             傳送給中心主任
           </Button>
+        ) : null}
+
+        {role == "deptmanager" &&
+        proposalContent.currentReviewer ==
+          proposalContent.centermanager.username ? (
+          <Label className="bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-2 rounded flex justify-center items-center">
+            已傳送給中心經理
+          </Label>
         ) : null}
 
         {proposalContent.status == "pending" && role == "centermanager" ? (

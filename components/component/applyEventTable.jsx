@@ -55,6 +55,9 @@ export default function ApplyEventTable({ username }) {
                         活動時間
                       </th>
                       <th scope="col" className="px-6 py-4">
+                        創建時間
+                      </th>
+                      <th scope="col" className="px-6 py-4">
                         狀態
                       </th>
                     </tr>
@@ -86,6 +89,11 @@ export default function ApplyEventTable({ username }) {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900">
                             {event.eventTime}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm text-gray-900">
+                            {event.createdTime}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">

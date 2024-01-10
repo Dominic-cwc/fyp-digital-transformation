@@ -4,6 +4,10 @@ import { ObjectId } from "mongodb";
 export default async function handler(req, res) {
   return new Promise((resolve) => {
     if (req.method === "POST") {
+      if (!req.body) {
+        return res.status(200).json({ message: "Body should no be empty!" });
+      }
+
       const {
         deptmanagerComment,
         centermanagerComment,

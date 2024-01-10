@@ -3,6 +3,10 @@ import { insertData } from "@/utlis/mongodbapi";
 export default function handler(req, res) {
   if (req.method === "POST") {
     return new Promise((resolve) => {
+      if (!req.body) {
+        return res.status(200).json({ message: "Body should no be empty!" });
+      }
+
       const {
         eventName,
         eventTypes,
@@ -30,6 +34,7 @@ export default function handler(req, res) {
           eventQuota: eventQuota,
           eventFee: eventFee,
           eventpurpose: eventpurpose,
+          createdTime: new Date().toLocaleString(),
           applicant: [],
         },
         "Events"

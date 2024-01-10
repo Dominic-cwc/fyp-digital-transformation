@@ -279,6 +279,15 @@ export default function Proposal({ user }) {
   const submitProposal = () => {
     axios.post("/api/submitProposal", proposalContent).then((res) => {
       if (res.data.message == "Proposal submitted") {
+        axios.post("/api/sendNotification", {
+          receiver: deptmanager.split(/\s(.+)/)[0],
+          title: "查看: 新的提案",
+          content: `${user.name} 提交了一個新的提案 "${eventName}"，請查看`,
+          checked: false,
+          flag: "red",
+          forUser: false,
+        });
+
         cleanData();
         alert("提交成功");
       }
