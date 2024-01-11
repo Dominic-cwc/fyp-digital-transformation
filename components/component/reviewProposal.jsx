@@ -135,7 +135,7 @@ export default function reviewProposal({
           })
           .then(() => {
             axios.post("/api/sendNotification", {
-              receiver: proposalContent.createdby.personalname,
+              receiver: proposalContent.createdby.username,
               title: "回覆: 提案: " + proposalContent.eventName,
               content: `${proposalContent.centermanager.personalname} 已經批准您的提案 "${proposalContent.eventName}" 並新增了這個活動。`,
               checked: false,
@@ -154,7 +154,7 @@ export default function reviewProposal({
           });
       } else if (role == "centermanager" && proposalStatus == "rejected") {
         axios.post("/api/sendNotification", {
-          receiver: proposalContent.createdby.personalname,
+          receiver: proposalContent.createdby.username,
           title: "回覆: 提案: " + proposalContent.eventName,
           content: `${proposalContent.centermanager.personalname} 已經拒絕了您的提案 "${proposalContent.eventName}"。`,
           checked: false,

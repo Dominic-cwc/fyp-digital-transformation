@@ -7,7 +7,7 @@ export default function handler(req, res) {
         return res.status(200).json({ message: "Body should no be empty!" });
       }
 
-      const { receiver, title, content, checked, flag } = req.body;
+      const { receiver, title, content, checked, flag, forUser } = req.body;
 
       insertData(
         {
@@ -17,6 +17,7 @@ export default function handler(req, res) {
           checked: checked,
           flag: flag,
           time: new Date().toLocaleString(),
+          forUser: forUser,
         },
         "Notifications"
       ).then((result) => {

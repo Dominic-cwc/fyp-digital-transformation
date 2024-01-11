@@ -5,6 +5,10 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     return new Promise((resolve) => {
       const { eventID, username } = req.body;
+      if (!eventID || !username) {
+        return res.status(200).json({ message: "Body should no be empty!" });
+      }
+
       updateData(
         { _id: new ObjectId(eventID) },
         {
