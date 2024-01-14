@@ -67,10 +67,10 @@ export default function MainPage({ user, logout }) {
                       Welcome back, User!
                     </h1>
                     <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
-                      <p>1</p>
+                      {/* <p>1</p>
                       <p>2</p>
                       <p>3</p>
-                      <p>4</p>
+                      <p>4</p> */}
                     </div>
                   </div>
                 ) : null}

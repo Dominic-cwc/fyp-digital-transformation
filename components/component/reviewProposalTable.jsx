@@ -143,6 +143,7 @@ export default function ReviewProposalTable({ username, role }) {
             setSelectedProposal={setSelectedProposal}
             setSubmittedComment={setSubmittedComment}
             role={role}
+            username={username}
           />
         </div>
       )}

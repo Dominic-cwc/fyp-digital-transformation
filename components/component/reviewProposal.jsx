@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import {
   SelectValue,
@@ -147,7 +147,7 @@ export default function reviewProposal({
               receiver: null,
               title: "新增活動: " + proposalContent.eventName,
               content: `新活動 "${proposalContent.eventName}" 開始接受報名。`,
-              checked: true,
+              checked: false,
               flag: "none",
               forUser: true,
             });
@@ -242,9 +242,9 @@ export default function reviewProposal({
         >
           返回
         </Button>
-        {proposalContent.status == "pending" &&
+        {(proposalContent.status == "pending" &&
         role == "deptmanager" &&
-        proposalContent.currentReviewer == username ? (
+        proposalContent.currentReviewer == username) ? (
           <Button
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
             onClick={() => {
