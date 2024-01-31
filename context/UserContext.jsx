@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
+import axios from "axios";
 
 // Create a context
 export const UserContext = createContext({
@@ -15,11 +16,22 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const user = sessionStorage.getItem("user");
+    const parsedUser = user ? JSON.parse(user) : {};
+
     setLoading(true);
-    if (user) {
-      setUser(JSON.parse(user));
-    }
-    setLoading(false);
+    axios
+      .post("http://localhost:3000/api/validateUser", {
+        _id: parsedUser._id,
+        username: parsedUser.username,
+        name: parsedUser.name,
+        role: parsedUser.role,
+      })
+      .then((res) => {
+        if (res.data === "Authenticated") {
+          setUser(parsedUser);
+        }
+        setLoading(false);
+      });
   }, []);
 
   const setUserHandler = (user) => {
