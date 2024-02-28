@@ -36,6 +36,10 @@ export default function login({ setUser }) {
           setUser(res.data);
         }
         setLoggingin(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoggingin(false);
       });
   };
 

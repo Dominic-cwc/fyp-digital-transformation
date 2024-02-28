@@ -22,6 +22,9 @@ export default function ApplyEventDetail({
         setSubmittedEvent(true);
         alert("報名成功");
         setSelectedEvent(null);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -35,6 +38,9 @@ export default function ApplyEventDetail({
         setSubmittedEvent(true);
         alert("取消報名成功");
         setSelectedEvent(null);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 

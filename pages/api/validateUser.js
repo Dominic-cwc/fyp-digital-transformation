@@ -7,7 +7,7 @@ export default async function handler(req, res) {
       // Process a POST request
       const { _id, username, name, role } = req.body;
       if (!_id || !username || !name || !role) {
-        res.status(200).json({ message: "Please login." });
+        res.status(401).json({ message: "Please login." });
         resolve();
       }
 
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       fetchData({ _id: new ObjectId(_id) }, "Users").then((result) => {
         if (result.length === 0) {
           //username not exist
-          res.status(200).json({ message: "User not exist." });
+          res.status(401).json({ message: "User not exist." });
         } else {
           //_id found
           if (
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
             res.status(200).json("Authenticated");
           } else {
             //Details incorrect
-            res.status(200).json({ message: "User not exist." });
+            res.status(401).json({ message: "User not exist." });
           }
         }
         resolve();

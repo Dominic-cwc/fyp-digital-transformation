@@ -116,6 +116,9 @@ export default function reviewProposal({
               forUser: false,
             });
           }
+        })
+        .catch((err) => {
+          console.log(err);
         });
 
       if (role == "centermanager" && proposalStatus == "approved") {
@@ -134,23 +137,31 @@ export default function reviewProposal({
             eventpurpose: proposalContent.eventpurpose,
           })
           .then(() => {
-            axios.post("/api/sendNotification", {
-              receiver: proposalContent.createdby.username,
-              title: "回覆: 提案: " + proposalContent.eventName,
-              content: `${proposalContent.centermanager.personalname} 已經批准您的提案 "${proposalContent.eventName}" 並新增了這個活動。`,
-              checked: false,
-              flag: "blue",
-              forUser: false,
-            });
+            axios
+              .post("/api/sendNotification", {
+                receiver: proposalContent.createdby.username,
+                title: "回覆: 提案: " + proposalContent.eventName,
+                content: `${proposalContent.centermanager.personalname} 已經批准您的提案 "${proposalContent.eventName}" 並新增了這個活動。`,
+                checked: false,
+                flag: "blue",
+                forUser: false,
+              })
+              .error((err) => {
+                console.log(err);
+              });
 
-            axios.post("/api/sendNotification", {
-              receiver: null,
-              title: "新增活動: " + proposalContent.eventName,
-              content: `新活動 "${proposalContent.eventName}" 開始接受報名。`,
-              checked: false,
-              flag: "none",
-              forUser: true,
-            });
+            axios
+              .post("/api/sendNotification", {
+                receiver: null,
+                title: "新增活動: " + proposalContent.eventName,
+                content: `新活動 "${proposalContent.eventName}" 開始接受報名。`,
+                checked: false,
+                flag: "none",
+                forUser: true,
+              })
+              .error((err) => {
+                console.log(err);
+              });
           });
       } else if (role == "centermanager" && proposalStatus == "rejected") {
         axios.post("/api/sendNotification", {
@@ -242,9 +253,9 @@ export default function reviewProposal({
         >
           返回
         </Button>
-        {(proposalContent.status == "pending" &&
+        {proposalContent.status == "pending" &&
         role == "deptmanager" &&
-        proposalContent.currentReviewer == username) ? (
+        proposalContent.currentReviewer == username ? (
           <Button
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
             onClick={() => {

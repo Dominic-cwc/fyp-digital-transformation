@@ -31,6 +31,10 @@ export const UserProvider = ({ children }) => {
           setUser(parsedUser);
         }
         setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
       });
   }, []);
 

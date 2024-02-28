@@ -33,7 +33,7 @@ export default function MainPage({ user, logout }) {
             setIsSidebarOpen={setIsSidebarOpen}
           />
           {(!isSidebarOpen || window.innerWidth >= 768) && (
-            <div className="w-full flex flex-col">
+            <div className="w-full flex flex-col overflow-x-auto">
               <header className="flex items-center justify-between flex-shrink-0 px-4 py-2 bg-gray-300 border-b">
                 <Button
                   className={

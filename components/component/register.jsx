@@ -158,6 +158,9 @@ export default function register() {
                     setResgistering(false);
                     window.location.href = "/";
                   }
+                })
+                .catch((err) => {
+                  console.log(err);
                 });
             }}
           >
