@@ -5,6 +5,7 @@
 .sidebar {
   width: 16.666667%; /* the width of the sidebar */
   transition: 0.5s cubic-bezier(0.36, -0.01, 0, 0.77);
+  flex-shrink: 0;
 }
 
 .sidebar.closed {
@@ -15,9 +16,9 @@
 /* Responsive Mobile */
 @media (max-width: 640px) {
   .sidebar {
-    width: 100vw;
+    width: 100%;
   }
   .sidebar.closed {
-    margin-left: -100vw;
+    margin-left: -100%;
   }
 }
