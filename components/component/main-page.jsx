@@ -13,6 +13,7 @@ import NotificationTable from "./notificationTable";
 export default function MainPage({ user, logout }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [currentPage, setCurrentPage] = useState("Home");
+  const [isSuggestionOpen, setIsSuggestionOpen] = useState(false);
 
   useEffect(() => {
     console.log(currentPage);
@@ -32,6 +33,7 @@ export default function MainPage({ user, logout }) {
             user={user}
             setIsSidebarOpen={setIsSidebarOpen}
           />
+
           {(!isSidebarOpen || window.innerWidth >= 768) && (
             <div className="w-full flex flex-col overflow-x-auto">
               <header className="flex items-center justify-between flex-shrink-0 px-4 py-2 bg-gray-300 border-b">
@@ -51,14 +53,27 @@ export default function MainPage({ user, logout }) {
                   <span className="sr-only">Open sidebar</span>
                 </Button>
                 <span className="text-lg font-semibold">{currentPage}</span>
-                <Button
-                  className="bg-gray-400 transition-all duration-300 ease-in-out hover:bg-red-400"
-                  title="Logout"
-                  onClick={logout}
-                >
-                  <span className="sr-only">Logout</span>
-                  <img src="/icons/logout.svg" className="h-3 w-3" />
-                </Button>
+                <div className="flex flex-row">
+                  {currentPage == "Create Proposal" && (
+                    <Button
+                      className="mr-2 bg-gray-400 transition-all duration-300 ease-in-out hover:bg-red-400"
+                      title="Event Safety Suggestion"
+                      onClick={() => setIsSuggestionOpen(!isSuggestionOpen)}
+                    >
+                      <span className="sr-only">Event Safety Suggestion</span>
+                      <img src="/icons/inquiry.svg" height={20} width={15} />
+                    </Button>
+                  )}
+
+                  <Button
+                    className="bg-gray-400 transition-all duration-300 ease-in-out hover:bg-red-400"
+                    title="Logout"
+                    onClick={logout}
+                  >
+                    <span className="sr-only">Logout</span>
+                    <img src="/icons/logout.svg" className="h-3 w-3" />
+                  </Button>
+                </div>
               </header>
               <main className="flex-1 overflow-y-auto p-4">
                 {currentPage == "Home" ? (
@@ -76,7 +91,37 @@ export default function MainPage({ user, logout }) {
                 ) : null}
 
                 {currentPage == "Create Proposal" ? (
-                  <Proposal user={user} />
+                  <div>
+                    <div
+                      className={
+                        isSuggestionOpen
+                          ? "fixed right-5 w-1/4 h-1/2 border transition-all duration-500 ease-in-out"
+                          : "fixed -right-full w-1/4 h-1/2 border transition-all duration-500 ease-in-out"
+                      }
+                    >
+                      <div className="bg-white p-4 rounded-lg min-h-full">
+                        <h1 className="text-lg font-semibold">
+                          Event Safety Suggestion
+                        </h1>
+                        <p className="mt-4">
+                          The event is a large-scale event, please make sure to
+                          have enough security personnel and medical personnel
+                          on site.
+                        </p>
+                        <div className="mt-4 flex justify-end">
+                          <Button
+                            className="bg-gray-400 transition-all duration-300 ease-in-out hover:bg-red-400"
+                            onClick={() =>
+                              setIsSuggestionOpen(!isSuggestionOpen)
+                            }
+                          >
+                            Close
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                    <Proposal user={user} />
+                  </div>
                 ) : null}
 
                 {currentPage == "Review Proposal" ? (
