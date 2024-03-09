@@ -20,8 +20,9 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import axios from "axios";
+import Image from "next/image";
 
-export default function register() {
+export default function Register() {
   const [role, setRole] = useState("");
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
@@ -165,7 +166,7 @@ export default function register() {
             }}
           >
             {resgistering ? (
-              <img src="icons/loading.gif" className="w-7 h-7" />
+              <Image src="icons/loading.gif" className="w-7 h-7" alt="" />
             ) : (
               "Register"
             )}

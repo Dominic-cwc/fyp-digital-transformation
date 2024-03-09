@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { IconFlag } from "./icon";
 import { Label } from "../ui/label";
-import { Button } from "../ui/button";
 
 export default function NotificationTable({ username, role }) {
   const [notification, setNotification] = useState([]);
@@ -25,9 +24,9 @@ export default function NotificationTable({ username, role }) {
       });
   }, []);
 
-  useEffect(() => {
-    console.log(notification);
-  }, [notification]);
+  // useEffect(() => {
+  //   console.log(notification);
+  // }, [notification]);
 
   useEffect(() => {
     if (readNotification == null) return;

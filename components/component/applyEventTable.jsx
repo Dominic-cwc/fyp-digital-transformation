@@ -12,7 +12,6 @@ export default function ApplyEventTable({ username }) {
       .get("http://localhost:3000/api/getAllEvents", {})
       .then((res) => {
         setEvent(res.data);
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);

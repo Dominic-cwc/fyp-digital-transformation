@@ -23,9 +23,9 @@ export default function ReviewProposalTable({ username, role }) {
       });
   }, []);
 
-  useEffect(() => {
-    console.log(proposal);
-  }, [proposal]);
+  // useEffect(() => {
+  //   console.log(proposal);
+  // }, [proposal]);
 
   useEffect(() => {
     if (submittedComment == null) return;

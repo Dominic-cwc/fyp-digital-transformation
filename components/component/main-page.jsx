@@ -1,5 +1,5 @@
 //React
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 //components
 import { Button } from "@/components/ui/button";
@@ -9,19 +9,12 @@ import Proposal from "./proposalTemplate";
 import ReviewProposalTable from "./reviewProposalTable";
 import ApplyEventTable from "./applyEventTable";
 import NotificationTable from "./notificationTable";
+import Image from "next/image";
 
 export default function MainPage({ user, logout }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [currentPage, setCurrentPage] = useState("Home");
   const [isSuggestionOpen, setIsSuggestionOpen] = useState(false);
-
-  useEffect(() => {
-    console.log(currentPage);
-  }, [currentPage]);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   return (
     <>
@@ -61,7 +54,12 @@ export default function MainPage({ user, logout }) {
                       onClick={() => setIsSuggestionOpen(!isSuggestionOpen)}
                     >
                       <span className="sr-only">Event Safety Suggestion</span>
-                      <img src="/icons/inquiry.svg" height={20} width={15} />
+                      <Image
+                        src="/icons/inquiry.svg"
+                        height={20}
+                        width={15}
+                        alt=""
+                      />
                     </Button>
                   )}
 
@@ -71,7 +69,7 @@ export default function MainPage({ user, logout }) {
                     onClick={logout}
                   >
                     <span className="sr-only">Logout</span>
-                    <img src="/icons/logout.svg" className="h-3 w-3" />
+                    <Image src="/icons/logout.svg" className="h-3 w-3" alt="" />
                   </Button>
                 </div>
               </header>

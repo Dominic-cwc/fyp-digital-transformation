@@ -3,7 +3,7 @@ import MainPageContainer from "../components/component/MainContainer";
 import { useEffect, useContext } from "react";
 import { UserContext } from "@/context/UserContext";
 
-export default function index() {
+export default function Index() {
   const { user, setUser, logout, loading } = useContext(UserContext);
 
   return (

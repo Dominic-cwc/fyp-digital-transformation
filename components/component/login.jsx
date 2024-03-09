@@ -11,8 +11,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import axios from "axios";
 import { useState } from "react";
+import Image from "next/image";
 
-export default function login({ setUser }) {
+export default function Login({ setUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginstatus, setLoginstatus] = useState("");
@@ -96,14 +97,14 @@ export default function login({ setUser }) {
               onClick={login}
             >
               {loggingin ? (
-                <img src="icons/loading.gif" className="w-7 h-7" />
+                <Image src="icons/loading.gif" className="w-7 h-7" alt="" />
               ) : (
                 "Login"
               )}
             </Button>
           </div>
           <div className="mt-4 text-center text-sm">
-            Don't have an account?
+            Don&apos;t have an account?
             <Link className="underline ml-2" href="./register">
               Register
             </Link>

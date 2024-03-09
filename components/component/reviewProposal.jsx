@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import {
   SelectValue,
@@ -12,7 +12,7 @@ import {
   Select,
 } from "@/components/ui/select";
 
-export default function reviewProposal({
+export default function ReviewProposal({
   proposalContent,
   setSelectedProposal,
   role,

@@ -7,7 +7,6 @@ import {
   IconNotifications,
   IconApplyEvent,
 } from "./icon";
-import { useEffect } from "react";
 
 export default function SideBar({
   isSidebarOpen,
@@ -15,10 +14,6 @@ export default function SideBar({
   user,
   setIsSidebarOpen,
 }) {
-  useEffect(() => {
-    console.log(user.role);
-  }, [user.role]);
-
   return (
     <div
       className={
