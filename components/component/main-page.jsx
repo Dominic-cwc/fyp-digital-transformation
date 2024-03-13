@@ -56,7 +56,7 @@ export default function MainPage({ user, logout }) {
                       <span className="sr-only">Event Safety Suggestion</span>
                       <Image
                         src="/icons/inquiry.svg"
-                        height={20}
+                        height={15}
                         width={15}
                         alt=""
                       />
@@ -69,7 +69,12 @@ export default function MainPage({ user, logout }) {
                     onClick={logout}
                   >
                     <span className="sr-only">Logout</span>
-                    <Image src="/icons/logout.svg" className="h-3 w-3" alt="" />
+                    <Image
+                      src="/icons/logout.svg"
+                      alt=""
+                      width={12}
+                      height={12}
+                    />
                   </Button>
                 </div>
               </header>

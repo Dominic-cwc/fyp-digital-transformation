@@ -97,7 +97,7 @@ export default function Login({ setUser }) {
               onClick={login}
             >
               {loggingin ? (
-                <Image src="icons/loading.gif" className="w-7 h-7" alt="" />
+                <Image src="/icons/loading.gif" alt="" width={28} height={28} />
               ) : (
                 "Login"
               )}
