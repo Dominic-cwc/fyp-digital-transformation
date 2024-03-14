@@ -3,22 +3,30 @@
 @tailwind utilities;
 
 .sidebar {
-  width: 16.666667%; /* the width of the sidebar */
+  width: 210px; /* the width of the sidebar */
   transition: 0.5s cubic-bezier(0.36, -0.01, 0, 0.77);
   flex-shrink: 0;
+  height: 100vh;
 }
 
 .sidebar.closed {
-  margin-left: -16.666667%; /* start off the screen */
-  transition: 0.1s cubic-bezier(0.36, -0.01, 0, 0.77);
+  margin-left: -210px; /* start off the screen */
 }
 
 /* Responsive Mobile */
 @media (max-width: 640px) {
   .sidebar {
-    width: 100%;
+    width: 100vw;
   }
   .sidebar.closed {
-    margin-left: -100%;
+    margin-left: -100vw;
+  }
+  .sidebar + .mainScreen {
+    position: fixed;
+    right: -100vw;
+    transition: 0.5s cubic-bezier(0.36, -0.01, 0, 0.77);
+  }
+  .sidebar.closed + .mainScreen {
+    right: 0;
   }
 }

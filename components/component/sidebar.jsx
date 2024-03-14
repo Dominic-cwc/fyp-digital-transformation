@@ -7,6 +7,7 @@ import {
   IconNotifications,
   IconApplyEvent,
 } from "./icon";
+import { useEffect, useState } from "react";
 
 export default function SideBar({
   isSidebarOpen,
@@ -14,6 +15,18 @@ export default function SideBar({
   user,
   setIsSidebarOpen,
 }) {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <div
       className={
@@ -27,7 +40,7 @@ export default function SideBar({
           <span className="text-lg font-semibold">DECC System</span>
           <span className="text-sm italic font-semibold">V1.0</span>
         </div>
-        {window.innerWidth < 768 && (
+        {width <= 640 && (
           <svg
             className="h-4 w-4 fill-current text-white mr-6 cursor-pointer hover:text-gray-300"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -45,7 +58,7 @@ export default function SideBar({
           href="/"
           onClick={() => {
             setCurrentPage("Home");
-            if (window.innerWidth < 768) setIsSidebarOpen(!isSidebarOpen);
+            if (window.innerWidth <= 640) setIsSidebarOpen(!isSidebarOpen);
           }}
         >
           <IconHome className="h-5 w-5 text-gray-300 group-hover:text-white" />
@@ -56,7 +69,7 @@ export default function SideBar({
             className="group flex items-center px-4 py-2 text-sm"
             onClick={() => {
               setCurrentPage("Create Proposal");
-              if (window.innerWidth < 768) setIsSidebarOpen(!isSidebarOpen);
+              if (window.innerWidth <= 640) setIsSidebarOpen(!isSidebarOpen);
             }}
             href="/"
           >
@@ -73,7 +86,7 @@ export default function SideBar({
             href="/"
             onClick={() => {
               setCurrentPage("Review Proposal");
-              if (window.innerWidth < 768) setIsSidebarOpen(!isSidebarOpen);
+              if (window.innerWidth <= 640) setIsSidebarOpen(!isSidebarOpen);
             }}
           >
             <IconChartbar className="h-5 w-5 text-gray-300 group-hover:text-white" />
@@ -87,7 +100,7 @@ export default function SideBar({
             href="/"
             onClick={() => {
               setCurrentPage("Apply Event");
-              if (window.innerWidth < 768) setIsSidebarOpen(!isSidebarOpen);
+              if (window.innerWidth <= 640) setIsSidebarOpen(!isSidebarOpen);
             }}
           >
             <IconApplyEvent className="h-5 w-5 text-gray-300 group-hover:text-white" />
@@ -100,7 +113,7 @@ export default function SideBar({
           href="/"
           onClick={() => {
             setCurrentPage("Notifications");
-            if (window.innerWidth < 768) setIsSidebarOpen(!isSidebarOpen);
+            if (window.innerWidth <= 640) setIsSidebarOpen(!isSidebarOpen);
           }}
         >
           <IconNotifications className="h-5 w-5 text-gray-300 group-hover:text-white" />
