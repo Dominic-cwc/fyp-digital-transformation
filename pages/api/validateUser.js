@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       //check if username exist
       fetchData({ _id: new ObjectId(_id) }, "Users").then((result) => {
         if (result.length === 0) {
-          //username not exist
+          //user not exist
           res.status(401).json({ message: "User not exist." });
         } else {
           //_id found
@@ -32,6 +32,11 @@ export default async function handler(req, res) {
         }
         resolve();
       });
+    } else if (req.method === "OPTIONS") {
+      res.status(200).json({ acceptedMethods: "POST" });
+    } else {
+      res.status(405).json({ message: "Method not allowed" });
+      resolve();
     }
   });
 }
