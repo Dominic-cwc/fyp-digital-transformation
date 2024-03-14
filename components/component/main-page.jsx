@@ -95,8 +95,8 @@ export default function MainPage({ user, logout }) {
                   <div
                     className={
                       isSuggestionOpen
-                        ? "fixed right-5 w-1/4 h-1/2 border transition-all duration-500 ease-in-out"
-                        : "fixed -right-full w-1/4 h-1/2 border transition-all duration-500 ease-in-out"
+                        ? "fixed right-5 w-72 h-1/2 border transition-all duration-500 ease-in-out"
+                        : "fixed -right-full w-72 h-1/2 border transition-all duration-500 ease-in-out"
                     }
                   >
                     <div className="bg-white p-4 rounded-lg min-h-full">
