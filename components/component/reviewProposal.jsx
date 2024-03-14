@@ -302,7 +302,7 @@ export default function ReviewProposal({
           致部門經理：
         </Label>
         <Select>
-          <SelectTrigger className="focus:ring-gray-400 w-1/4 mb-2">
+          <SelectTrigger className="focus:ring-gray-400 w-40 mb-2">
             <SelectValue
               placeholder={proposalContent.deptmanager.personalname}
             />
@@ -314,7 +314,7 @@ export default function ReviewProposal({
           致中心經理：
         </Label>
         <Select onValueChange={(value) => setCentermanager(value)}>
-          <SelectTrigger className="focus:ring-gray-400 w-1/4 mb-2">
+          <SelectTrigger className="focus:ring-gray-400 w-40 mb-2">
             <SelectValue
               placeholder={proposalContent.centermanager.personalname}
             />

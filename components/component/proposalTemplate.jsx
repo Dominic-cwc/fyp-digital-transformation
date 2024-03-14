@@ -426,7 +426,7 @@ export default function Proposal({ user }) {
           致部門經理<span className="text-red-500">*</span>：
         </Label>
         <Select onValueChange={(value) => setDeptmanager(value)}>
-          <SelectTrigger className="focus:ring-gray-400 w-1/4 mb-2">
+          <SelectTrigger className="focus:ring-gray-400 w-40 mb-2">
             <SelectValue placeholder="請選擇部門經理" />
           </SelectTrigger>
           <SelectContent className="bg-white">
@@ -455,7 +455,7 @@ export default function Proposal({ user }) {
           致中心經理<span className="text-red-500">*</span>：
         </Label>
         <Select onValueChange={(value) => setCentermanager(value)}>
-          <SelectTrigger className="focus:ring-gray-400 w-1/4 mb-2">
+          <SelectTrigger className="focus:ring-gray-400 w-40 mb-2">
             <SelectValue placeholder="請選擇中心經理" />
           </SelectTrigger>
           <SelectContent className="bg-white">
