@@ -52,7 +52,7 @@ export default function ReviewProposalTable({ username, role }) {
           <div>
             <div className="inline-block min-w-full py-2">
               <div className="overflow-hidden">
-                <table className="min-w-full text-left text-sm font-light">
+                <table className="presentTable min-w-full text-left text-sm font-light">
                   <thead className="border-b font-medium dark:border-neutral-500">
                     <tr>
                       <th scope="col" className="px-6 py-4">

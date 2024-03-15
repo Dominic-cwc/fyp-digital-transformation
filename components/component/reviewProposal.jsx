@@ -321,6 +321,14 @@ export default function ReviewProposal({
           </SelectTrigger>
         </Select>
       </div>
+      <div className="flex flex-row">
+        <Label htmlFor="createdTime" className="text-sm  md:text-base">
+          提案建立時間：
+        </Label>
+        <span className="text-sm  md:text-base ml-2">
+          {new Date(proposalContent.timestamp).toLocaleString()}
+        </span>
+      </div>
       {!abletosubmit ? (
         <div className="text-red-500">請填寫所有帶有*的資料</div>
       ) : null}

@@ -29,4 +29,13 @@
   .sidebar.closed + .mainScreen {
     right: 0;
   }
+
+  .presentTable tr td,
+  .presentTable tr th {
+    padding: 0.5rem;
+    white-space: nowrap; /* Prevent text from wrapping to the next line */
+    overflow: hidden; /* Hide overflow content */
+    text-overflow: ellipsis; /* Add ellipsis to overflow content */
+    max-width: 0; /* Ensure the content area can be smaller than content size */
+  }
 }

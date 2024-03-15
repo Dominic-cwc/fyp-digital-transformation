@@ -137,6 +137,12 @@ export default function ApplyEventDetail({
         ) : null}
       </div>
       <div className="flex flex-row">
+        <Label className="text-sm  md:text-base">新增時間:</Label>
+        <Label className="ml-2 text-sm  md:text-base">
+          {EventDetail.createdTime}
+        </Label>
+      </div>
+      <div className="flex flex-row">
         <Label className="text-sm  md:text-base">活動名稱:</Label>
         <Label className="ml-2 text-sm  md:text-base">
           {EventDetail.eventName}
