@@ -61,7 +61,11 @@ export default function NotificationTable({ username, role }) {
             <div
               className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
               aria-hidden="true"
-              onClick={() =>
+              onClick={() => {
+                if (selectedNotification.checked) {
+                  setSelectedNotification(null);
+                  return;
+                }
                 axios
                   .post("/api/checkedNotification", {
                     notificationID: selectedNotification._id,
@@ -70,8 +74,8 @@ export default function NotificationTable({ username, role }) {
                   .then(() => {
                     setReadNotification(true);
                     setSelectedNotification(null);
-                  })
-              }
+                  });
+              }}
             ></div>
 
             <span
@@ -89,7 +93,6 @@ export default function NotificationTable({ username, role }) {
                   stroke="currentColor"
                   onClick={() => {
                     if (selectedNotification.checked) {
-                      setReadNotification(true);
                       setSelectedNotification(null);
                       return;
                     }
@@ -212,7 +215,7 @@ export default function NotificationTable({ username, role }) {
                   {notification.map((notification, index) => (
                     <tr
                       key={index}
-                      className="cursor-pointer transition-all hover:bg-gray-100 hover:shadow-lg"
+                      className="cursor-pointer transition-all hover:bg-gray-100"
                       onClick={() => {
                         setSelectedNotification(notification);
                       }}

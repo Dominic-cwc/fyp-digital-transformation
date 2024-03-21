@@ -19,10 +19,9 @@ async def get_responses(messages):
 
 @app.route('/api/getSuggestions', methods=['POST'])
 def getSuggestions():
-    data = f.request.json
-    print(data["name"])
+    data = f.request
+    print(data.headers)
     return json.dumps({'success': True}), 200, {'Content-Type': 'application/json'}
-
 
 if __name__ == '__main__':
     app.run(debug=True)
