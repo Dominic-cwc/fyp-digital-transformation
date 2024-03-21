@@ -24,7 +24,7 @@ export default async function handler(req, res) {
           resolve();
         });
       } else {
-        res.status(200).json("Notificaiton checked");
+        res.status(200).json("Event Notificaiton checked");
         resolve();
       }
     });

@@ -12,7 +12,11 @@ import {
   Select,
 } from "@/components/ui/select";
 
-export default function Proposal({ user }) {
+export default function Proposal({
+  user,
+  isSuggestionOpen,
+  setIsSuggestionOpen,
+}) {
   const eventTypes = [
     "社交及康樂 DECC 3b/NEC 3a(iii)",
     "長者教育/發展 DECC 3a(i)/NEC3a(ii)",
@@ -42,21 +46,21 @@ export default function Proposal({ user }) {
     "參加者類別",
   ];
   const [page, setPage] = useState(1);
-  const [checkedItems, setCheckedItems] = useState([]);
+  const [checkedItems, setCheckedItems] = useState([]); // *
   const [decc8, setDecc8] = useState(false);
   const [decc4, setDecc4] = useState(false);
   const [decc5, setDecc5] = useState(false);
   const [proposalContent, setProposalContent] = useState({});
-  const [eventName, setEventName] = useState("");
+  const [eventName, setEventName] = useState(""); // *
   const [decc8Content, setDecc8Content] = useState("");
   const [decc4Content, setDecc4Content] = useState("");
   const [decc5Content, setDecc5Content] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [eventWeek, setEventWeek] = useState("");
-  const [eventTime, setEventTime] = useState("");
+  const [eventTime, setEventTime] = useState(""); // *
   const [eventNum, setEventNum] = useState("");
   const [eventLocation, setEventLocation] = useState("");
-  const [eventTarget, setEventTarget] = useState("");
+  const [eventTarget, setEventTarget] = useState(""); // *
   const [eventQuota, setEventQuota] = useState("");
   const [eventFee, setEventFee] = useState("");
   const [eventTutor, setEventTutor] = useState("");
@@ -69,9 +73,9 @@ export default function Proposal({ user }) {
     others: false,
     othersname: "",
   });
-  const [eventpurpose, setEventpurpose] = useState("");
+  const [eventpurpose, setEventpurpose] = useState(""); // *
   const [eventevaluate, setEventevaluate] = useState("");
-  const [eventpurposedetail, setEventpurposedetail] = useState("");
+  const [eventpurposedetail, setEventpurposedetail] = useState(""); // *
   const [pagetwonote, setPagetwonote] = useState("");
   const [eventrevenue, setEventrevenue] = useState("");
   const [eventbudget, setEventbudget] = useState("");
@@ -298,8 +302,6 @@ export default function Proposal({ user }) {
     if (checkInputtedContent()) {
       setAbletosubmit(true);
       submitProposal();
-    } else if (Object.keys(proposalContent).length > 0) {
-      setAbletosubmit(false);
     }
   }, [proposalContent]);
 
@@ -367,6 +369,45 @@ export default function Proposal({ user }) {
 
   return (
     <div>
+      <div
+        className={
+          isSuggestionOpen
+            ? "fixed right-5 w-72 h-1/2 border transition-all duration-500 ease-in-out"
+            : "fixed -right-full w-72 h-1/2 border transition-all duration-500 ease-in-out"
+        }
+      >
+        <div className="bg-white p-4 rounded-lg min-h-full">
+          <div className="flex justify-between">
+            <h1 className="text-lg font-semibold">活動安全建議AI</h1>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 cursor-pointer text-red-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              onClick={() => {
+                setIsSuggestionOpen(!isSuggestionOpen);
+              }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </div>
+          <p className="mt-4">
+            <Button
+              className="w-full bg-gray-300 transition-all duration-300 ease-in-out hover:bg-green-400"
+              onClick={() => setIsSuggestionOpen(!isSuggestionOpen)}
+            >
+              生成建議
+            </Button>
+          </p>
+          <div className="mt-4"></div>
+        </div>
+      </div>
       {clickedSubmit ? (
         <div
           className="fixed z-10 inset-0 overflow-y-auto"

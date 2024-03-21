@@ -92,33 +92,11 @@ export default function MainPage({ user, logout }) {
 
               {currentPage == "Create Proposal" ? (
                 <div>
-                  <div
-                    className={
-                      isSuggestionOpen
-                        ? "fixed right-5 w-72 h-1/2 border transition-all duration-500 ease-in-out"
-                        : "fixed -right-full w-72 h-1/2 border transition-all duration-500 ease-in-out"
-                    }
-                  >
-                    <div className="bg-white p-4 rounded-lg min-h-full">
-                      <h1 className="text-lg font-semibold">
-                        Event Safety Suggestion
-                      </h1>
-                      <p className="mt-4">
-                        The event is a large-scale event, please make sure to
-                        have enough security personnel and medical personnel on
-                        site.
-                      </p>
-                      <div className="mt-4 flex justify-end">
-                        <Button
-                          className="bg-gray-400 transition-all duration-300 ease-in-out hover:bg-red-400"
-                          onClick={() => setIsSuggestionOpen(!isSuggestionOpen)}
-                        >
-                          Close
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  <Proposal user={user} />
+                  <Proposal
+                    user={user}
+                    isSuggestionOpen={isSuggestionOpen}
+                    setIsSuggestionOpen={setIsSuggestionOpen}
+                  />
                 </div>
               ) : null}
 

@@ -87,7 +87,12 @@ export default function NotificationTable({ username, role }) {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  onClick={() =>
+                  onClick={() => {
+                    if (selectedNotification.checked) {
+                      setReadNotification(true);
+                      setSelectedNotification(null);
+                      return;
+                    }
                     axios
                       .post("/api/checkedNotification", {
                         notificationID: selectedNotification._id,
@@ -96,8 +101,8 @@ export default function NotificationTable({ username, role }) {
                       .then(() => {
                         setReadNotification(true);
                         setSelectedNotification(null);
-                      })
-                  }
+                      });
+                  }}
                 >
                   <path
                     strokeLinecap="round"
