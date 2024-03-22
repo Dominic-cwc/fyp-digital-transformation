@@ -13,6 +13,11 @@
   margin-left: -210px; /* start off the screen */
 }
 
+#aiOutput {
+  font-size: small;
+  white-space: pre-wrap;
+}
+
 /* Responsive Mobile */
 @media (max-width: 640px) {
   .sidebar {

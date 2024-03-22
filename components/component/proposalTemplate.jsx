@@ -200,6 +200,7 @@ export default function Proposal({
     axios.get("/api/getAllManagers").then((res) => {
       setManagerlist(res.data);
     });
+    setAbletosubmit(true);
   }, []);
 
   const addToProposalContent = () => {
@@ -299,11 +300,26 @@ export default function Proposal({
   };
 
   useEffect(() => {
-    if (checkInputtedContent()) {
+    if (checkInputtedContent() && Object.keys(proposalContent).length > 0) {
       setAbletosubmit(true);
       submitProposal();
+    } else if (Object.keys(proposalContent).length > 0) {
+      // prevent at start no data and print error
+      setAbletosubmit(false);
     }
   }, [proposalContent]);
+
+  const textwriter = (text, id) => {
+    let speed = 50;
+    let output = document.getElementById(id);
+    output.innerHTML = "";
+
+    for (let i = 0; i < text.length; i++) {
+      setTimeout(function () {
+        output.innerHTML += text.charAt(i);
+      }, speed * i);
+    }
+  };
 
   const checkInputtedContent = () => {
     if (eventName == "") {
@@ -372,8 +388,8 @@ export default function Proposal({
       <div
         className={
           isSuggestionOpen
-            ? "fixed right-5 w-72 h-1/2 border transition-all duration-500 ease-in-out"
-            : "fixed -right-full w-72 h-1/2 border transition-all duration-500 ease-in-out"
+            ? "fixed right-5 w-72 h-fit border transition-all duration-500 ease-in-out"
+            : "fixed -right-full w-72 h-fit border transition-all duration-500 ease-in-out"
         }
       >
         <div className="bg-white p-4 rounded-lg min-h-full">
@@ -400,12 +416,32 @@ export default function Proposal({
           <p className="mt-4">
             <Button
               className="w-full bg-gray-300 transition-all duration-300 ease-in-out hover:bg-green-400"
-              onClick={() => setIsSuggestionOpen(!isSuggestionOpen)}
+              onClick={(e) => {
+                const target = e.currentTarget;
+                target.innerText = "生成中...";
+                const eventDetailforAI = {
+                  eventName: eventName,
+                  eventTypes: checkedItems,
+                  eventTarget: eventTarget,
+                  eventPurpoose: eventpurpose,
+                  eventPurposeDetail: eventpurposedetail,
+                };
+                axios
+                  .post("/api/getSuggestions", eventDetailforAI)
+                  .then((res) => {
+                    textwriter(res.data.message, "aiOutput");
+                    target.innerText = "生成建議";
+                  })
+                  .catch((err) => {
+                    textwriter("AI建議系統發生錯誤", "aiOutput");
+                    target.innerText = "生成建議";
+                  });
+              }}
             >
               生成建議
             </Button>
           </p>
-          <div className="mt-4"></div>
+          <div className="mt-4" id="aiOutput"></div>
         </div>
       </div>
       {clickedSubmit ? (
@@ -876,9 +912,7 @@ export default function Proposal({
             </Button>
           </div>
         </div>
-      ) : // submit button
-
-      null}
+      ) : null}
       <div className="flex flex-row justify-between">
         <Button
           id="prev"
@@ -887,13 +921,15 @@ export default function Proposal({
         >
           上一頁
         </Button>
-        <Button
-          id="next"
-          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-          onClick={(e) => handlePageChange(e.target.id)}
-        >
-          下一頁
-        </Button>
+        {page < 3 ? (
+          <Button
+            id="next"
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+            onClick={(e) => handlePageChange(e.target.id)}
+          >
+            下一頁
+          </Button>
+        ) : null}
       </div>
     </div>
   );
