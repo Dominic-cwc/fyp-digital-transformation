@@ -23,9 +23,9 @@ async def get_responses(messages):
 def getSuggestions():
     data = f.request.data.decode('utf-8')
 
-    content = "請以繁體中文進行簡短回答, 你現在只會回答關於活動安全的建議, 如果沒有提供資料給你或活動資料不合理, 請回答'沒有提供足夠資料, 請先填寫方案。'"
+    content = """請以繁體中文進行回答, 基於所獲得的活動資料，利用點格式回答關於活動安全的建議(對於參加者而言)。如果提供的活動資料為空或不合理, 請回答'沒有提供足夠資料或所提供的資料不合理。'"""
     detail= data
-    print(content+detail)
+    print(content+"\n活動資料:"+detail)
 
     messagetoAI = fp.ProtocolMessage(role="user", content=content+detail)
     result = asyncio.run(get_responses([messagetoAI]))

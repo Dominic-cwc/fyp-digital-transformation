@@ -388,8 +388,8 @@ export default function Proposal({
       <div
         className={
           isSuggestionOpen
-            ? "fixed right-5 w-72 h-fit border transition-all duration-500 ease-in-out"
-            : "fixed -right-full w-72 h-fit border transition-all duration-500 ease-in-out"
+            ? "fixed right-5 w-4/12 h-4/6 border transition-all duration-500 ease-in-out overflow-y-auto"
+            : "fixed -right-full w-4/12 h-4/6 border transition-all duration-500 ease-in-out overflow-y-auto"
         }
       >
         <div className="bg-white p-4 rounded-lg min-h-full">
@@ -420,11 +420,11 @@ export default function Proposal({
                 const target = e.currentTarget;
                 target.innerText = "生成中...";
                 const eventDetailforAI = {
-                  eventName: eventName,
-                  eventTypes: checkedItems,
-                  eventTarget: eventTarget,
-                  eventPurpoose: eventpurpose,
-                  eventPurposeDetail: eventpurposedetail,
+                  活動名稱: eventName,
+                  活動類型: checkedItems,
+                  活動對象: eventTarget,
+                  活動目的: eventpurpose,
+                  活動目的內容: eventpurposedetail,
                 };
                 axios
                   .post("/api/getSuggestions", eventDetailforAI)
