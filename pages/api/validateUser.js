@@ -7,8 +7,7 @@ export default async function handler(req, res) {
       // Process a POST request
       const { _id, username, name, role } = req.body;
       if (!_id || !username || !name || !role) {
-        res.status(401).json({ message: "Please login." });
-        resolve();
+        return res.status(401).json({ message: "Please login." });
       }
 
       //check if username exist
@@ -36,7 +35,6 @@ export default async function handler(req, res) {
       res.status(200).json({ acceptedMethods: "POST" });
     } else {
       res.status(405).json({ message: "Method not allowed" });
-      resolve();
     }
   });
 }

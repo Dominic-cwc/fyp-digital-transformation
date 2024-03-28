@@ -47,6 +47,5 @@ export default function handler(req, res) {
     res.status(200).json({ acceptedMethods: "POST" });
   } else {
     res.status(405).json({ message: "Method not allowed" });
-    resolve();
   }
 }
