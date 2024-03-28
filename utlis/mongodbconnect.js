@@ -15,5 +15,6 @@ async function connect() {
   await client.connect();
   console.log("Connected to MongoDB");
   global.database = client.db("FYP-Project");
+  global.client = client;
 }
 module.exports = connect();

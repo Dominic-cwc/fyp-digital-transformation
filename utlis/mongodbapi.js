@@ -4,9 +4,19 @@ export async function fetchData(query, collectionName) {
   if (global.database === undefined) {
     await require("./mongodbconnect.js");
   }
-
-  const collection = global.database.collection(collectionName);
-  const result = await collection.find(query).toArray();
+  const session = global.client.startSession();
+  let result;
+  try {
+    session.startTransaction();
+    const collection = global.database.collection(collectionName);
+    result = await collection.find(query, { session }).toArray();
+    await session.commitTransaction();
+  } catch (e) {
+    await session.abortTransaction();
+    throw e;
+  } finally {
+    session.endSession();
+  }
   return result;
 }
 
@@ -14,13 +24,27 @@ export async function insertData(query, collectionName) {
   if (global.database === undefined) {
     await require("./mongodbconnect.js");
   }
-  const collection = global.database.collection(collectionName);
-  if (Array.isArray(query) === false) {
-    const result = await collection.insertOne(query);
-    return result;
+  const session = global.client.startSession();
+  let result;
+
+  try {
+    session.startTransaction();
+    const collection = global.database.collection(collectionName);
+    if (Array.isArray(query) === false) {
+      result = await collection.insertOne(query, { session });
+      await session.commitTransaction();
+    }
+    //Array of objects
+    else {
+      result = await collection.insertMany(query, { session });
+      await session.commitTransaction();
+    }
+  } catch (e) {
+    await session.abortTransaction();
+    throw e;
+  } finally {
+    session.endSession();
   }
-  //Array of objects
-  const result = await collection.insertMany(query);
   return result;
 }
 
@@ -28,8 +52,20 @@ export async function updateData(query, update, collectionName) {
   if (global.database === undefined) {
     await require("./mongodbconnect.js");
   }
-  const collection = global.database.collection(collectionName);
-  const result = await collection.updateOne(query, update);
+  const session = global.client.startSession();
+  let result;
+  try {
+    session.startTransaction();
+    const collection = global.database.collection(collectionName);
+    result = await collection.updateOne(query, update, { session });
+    await session.commitTransaction();
+  } catch (e) {
+    await session.abortTransaction();
+    throw e;
+  } finally {
+    session.endSession();
+  }
+
   return result;
 }
 
@@ -37,8 +73,20 @@ export async function deleteData(query, collectionName) {
   if (global.database === undefined) {
     await require("./mongodbconnect.js");
   }
-  const collection = global.database.collection(collectionName);
-  const result = await collection.deleteOne(query);
+  const session = global.client.startSession();
+  let result;
+  try {
+    session.startTransaction();
+    const collection = global.database.collection(collectionName);
+    result = await collection.deleteOne(query, { session });
+    await session.commitTransaction();
+  } catch (e) {
+    await session.abortTransaction();
+    throw e;
+  } finally {
+    session.endSession();
+  }
+
   return result;
 }
 
