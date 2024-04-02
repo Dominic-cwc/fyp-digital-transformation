@@ -1,5 +1,6 @@
 import { fetchData } from "@/utlis/mongodbapi";
 import crypto from "crypto-js";
+import { getIronSession } from "iron-session";
 
 export default async function handler(req, res) {
   return new Promise((resolve) => {
@@ -14,7 +15,7 @@ export default async function handler(req, res) {
       }
 
       //check if username exist
-      fetchData({ username: username }, "Users").then((result) => {
+      fetchData({ username: username }, "Users").then(async (result) => {
         if (result.length === 0) {
           //username not exist
           res
@@ -25,6 +26,16 @@ export default async function handler(req, res) {
           if (result[0].password === crypto.SHA256(password).toString()) {
             //password correct
             delete result[0].password;
+            //set session
+            const session = await getIronSession(req, res, {
+              password: process.env.SECRET_COOKIE_PASSWORD,
+              cookieName: "session",
+              cookieOptions: {
+                secure: process.env.NODE_ENV === "production" ? true : false,
+              },
+            });
+            session.user = result[0];
+            await session.save();
             res.status(200).json(result[0]);
           } else {
             //password incorrect
