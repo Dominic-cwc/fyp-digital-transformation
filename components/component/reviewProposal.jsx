@@ -96,7 +96,7 @@ export default function ReviewProposal({
   const submitProposalComment = () => {
     if (handleInputCheck()) {
       axios
-        .post("http://localhost:3000/api/submitProposalComment", {
+        .post("/api/submitProposalComment", {
           deptmanagerComment: deptmanagerComment,
           centermanagerComment: centermanagerComment,
           proposalStatus: proposalStatus,
@@ -123,7 +123,7 @@ export default function ReviewProposal({
 
       if (role == "centermanager" && proposalStatus == "approved") {
         axios
-          .post("http://localhost:3000/api/createEvent", {
+          .post("/api/createEvent", {
             eventName: proposalContent.eventName,
             eventTypes: proposalContent.eventTypes,
             eventDate: proposalContent.eventDate,

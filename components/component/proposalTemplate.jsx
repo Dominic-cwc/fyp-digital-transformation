@@ -388,8 +388,8 @@ export default function Proposal({
       <div
         className={
           isSuggestionOpen
-            ? "fixed right-5 w-4/12 h-4/6 border transition-all duration-500 ease-in-out overflow-y-auto"
-            : "fixed -right-full w-4/12 h-4/6 border transition-all duration-500 ease-in-out overflow-y-auto"
+            ? "fixed right-5 max-sm:w-8/12 w-4/12 h-4/6 border transition-all duration-500 ease-in-out overflow-y-auto"
+            : "fixed -right-full max-sm:w-8/12 w-4/12 h-4/6 border transition-all duration-500 ease-in-out overflow-y-auto"
         }
       >
         <div className="bg-white p-4 rounded-lg min-h-full">

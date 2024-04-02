@@ -128,3 +128,7 @@ dist
 
 utliscopy/*
 utlis/__pycache__/mongodbconnect.cpython-311.pyc
+
+.vercel
+
+requirements.txt

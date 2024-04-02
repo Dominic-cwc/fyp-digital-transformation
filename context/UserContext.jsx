@@ -20,7 +20,7 @@ export const UserProvider = ({ children }) => {
 
     setLoading(true);
     axios
-      .post("http://localhost:3000/api/validateUser", {
+      .post("/api/validateUser", {
         _id: parsedUser._id,
         username: parsedUser.username,
         name: parsedUser.name,

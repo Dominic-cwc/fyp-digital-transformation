@@ -10,7 +10,7 @@ export default function NotificationTable({ username, role }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/getNotifications", {
+      .get("/api/getNotifications", {
         params: {
           username: username,
           role: role,
@@ -31,7 +31,7 @@ export default function NotificationTable({ username, role }) {
   useEffect(() => {
     if (readNotification == null) return;
     axios
-      .get("http://localhost:3000/api/getNotifications", {
+      .get("/api/getNotifications", {
         params: {
           username: username,
           role: role,

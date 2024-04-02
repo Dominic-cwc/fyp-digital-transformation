@@ -22,7 +22,7 @@ export default function Login({ setUser }) {
   const login = () => {
     setLoggingin(true);
     axios
-      .post("http://localhost:3000/api/login", {
+      .post("/api/login", {
         username: username,
         password: password,
       })

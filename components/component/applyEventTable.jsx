@@ -9,7 +9,7 @@ export default function ApplyEventTable({ username }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/getAllEvents", {})
+      .get("/api/getAllEvents", {})
       .then((res) => {
         setEvent(res.data);
       })
@@ -21,7 +21,7 @@ export default function ApplyEventTable({ username }) {
   useEffect(() => {
     if (submittedEvent == null) return;
     axios
-      .get("http://localhost:3000/api/getAllEvents", {})
+      .get("/api/getAllEvents", {})
       .then((res) => {
         setEvent(res.data);
         setSubmittedEvent(null);

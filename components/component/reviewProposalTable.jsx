@@ -9,7 +9,7 @@ export default function ReviewProposalTable({ username, role }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/getRelatedProposals", {
+      .get("api/getRelatedProposals", {
         params: {
           username: username,
           role: role,
@@ -30,7 +30,7 @@ export default function ReviewProposalTable({ username, role }) {
   useEffect(() => {
     if (submittedComment == null) return;
     axios
-      .get("http://localhost:3000/api/getRelatedProposals", {
+      .get("/api/getRelatedProposals", {
         params: {
           username: username,
           role: role,
