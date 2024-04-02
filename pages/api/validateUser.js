@@ -4,7 +4,6 @@ export default async function handler(req, res) {
   return new Promise(async (resolve) => {
     if (req.method === "POST") {
       // Process a POST request
-
       //check if user is authenticated
       const session = await getIronSession(req, res, {
         password: process.env.SECRET_COOKIE_PASSWORD,
