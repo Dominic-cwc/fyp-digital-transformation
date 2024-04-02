@@ -4,7 +4,6 @@ export default async (req, res) => {
   return new Promise((resolve) => {
     if (req.method === "POST") {
       const proposalData = req.body;
-
       axios
         .post(
           `${process.env.PYTHON_BACKEND_URL}/api/getSuggestions`,
