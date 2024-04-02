@@ -3,11 +3,16 @@ import axios from "axios";
 export default async (req, res) => {
   return new Promise((resolve) => {
     if (req.method === "POST") {
-      const proposalData = req.body;
+      const { eventDetailforAI, origin } = req.body;
       axios
         .post(
           `${process.env.PYTHON_BACKEND_URL}/api/getSuggestions`,
-          proposalData
+          eventDetailforAI,
+          {
+            headers: {
+              Origin: origin,
+            },
+          }
         )
         .then((response) => {
           res.status(200).json(response.data);

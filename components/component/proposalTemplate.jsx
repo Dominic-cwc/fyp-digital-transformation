@@ -426,8 +426,9 @@ export default function Proposal({
                   活動目的: eventpurpose,
                   活動目的內容: eventpurposedetail,
                 };
+                const origin = window.location.origin;
                 axios
-                  .post("/api/getSuggestions", eventDetailforAI)
+                  .post("/api/getSuggestions", { eventDetailforAI, origin })
                   .then((res) => {
                     textwriter(res.data.message, "aiOutput");
                     target.innerText = "生成建議";
