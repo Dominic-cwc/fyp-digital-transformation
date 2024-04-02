@@ -15,7 +15,7 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const user = sessionStorage.getItem("user");
+    const user = localStorage.getItem("user");
     const parsedUser = user ? JSON.parse(user) : {};
 
     setLoading(true);
@@ -27,8 +27,10 @@ export const UserProvider = ({ children }) => {
         role: parsedUser.role,
       })
       .then((res) => {
-        if (res.data === "Authenticated") {
+        if (res.data.message === "Authenticated") {
           setUser(parsedUser);
+        } else {
+          localStorage.removeItem("user");
         }
         setLoading(false);
       })
@@ -40,12 +42,15 @@ export const UserProvider = ({ children }) => {
 
   const setUserHandler = (user) => {
     setUser(user);
-    sessionStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify(user));
   };
 
   const logoutHandler = () => {
     setUser(null);
-    sessionStorage.removeItem("user");
+    localStorage.removeItem("user");
+    axios.post("/api/logout").then((res) => {
+      console.log(res.data);
+    });
   };
 
   return (
