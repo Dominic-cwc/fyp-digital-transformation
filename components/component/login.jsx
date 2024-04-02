@@ -46,12 +46,7 @@ export default function Login({ setUser }) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <Card
-        className="mx-auto max-w-md"
-        style={{
-          width: "40rem",
-        }}
-      >
+      <Card className="mx-auto w-[28rem] max-sm:w-full bg-white shadow-lg rounded-lg overflow-hidden">
         <CardHeader className="space-y-1">
           <h1 className="text-3xl font-bold mb-4 text-center">
             DECC System V1.0

@@ -32,12 +32,7 @@ export default function Register() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <Card
-        className="mx-auto max-w-md"
-        style={{
-          width: "40rem",
-        }}
-      >
+      <Card className="mx-auto w-[28rem] max-sm:w-full bg-white shadow-lg rounded-lg overflow-hidden">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Register</CardTitle>
           <CardDescription className="text-gray-500">
