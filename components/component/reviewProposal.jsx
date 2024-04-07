@@ -90,6 +90,9 @@ export default function ReviewProposal({
     if (proposalStatus == "" && role == "centermanager") {
       return false;
     }
+    if (role == "deptmanager" && deptmanagerComment == "") {
+      return false;
+    }
     return true;
   };
 
@@ -297,38 +300,44 @@ export default function ReviewProposal({
           </Label>
         ) : null}
       </div>
-      <div className="flex flex-row">
-        <Label htmlFor="deptmanager" className="text-sm  md:text-base">
-          致部門經理：
-        </Label>
-        <Select>
-          <SelectTrigger className="focus:ring-gray-400 w-40 mb-2">
-            <SelectValue
-              placeholder={proposalContent.deptmanager.personalname}
-            />
-          </SelectTrigger>
-        </Select>
+
+      <div className="flex flex-row justify-between">
+        <div>
+          <div className="flex flex-row">
+            <Label htmlFor="deptmanager" className="text-sm  md:text-base">
+              致部門經理：
+            </Label>
+            <Select>
+              <SelectTrigger className="focus:ring-gray-400 w-40 mb-2">
+                <SelectValue
+                  placeholder={proposalContent.deptmanager.personalname}
+                />
+              </SelectTrigger>
+            </Select>
+          </div>
+          <div className="flex flex-row">
+            <Label htmlFor="centermanager" className="text-sm  md:text-base">
+              致中心經理：
+            </Label>
+            <Select>
+              <SelectTrigger className="focus:ring-gray-400 w-40 mb-2">
+                <SelectValue
+                  placeholder={proposalContent.centermanager.personalname}
+                />
+              </SelectTrigger>
+            </Select>
+          </div>
+        </div>
+        <div className="flex flex-row">
+          <Label htmlFor="createdTime" className="text-sm  md:text-base">
+            提案建立時間：
+          </Label>
+          <span className="text-sm  md:text-base">
+            {new Date(proposalContent.timestamp).toLocaleString()}
+          </span>
+        </div>
       </div>
-      <div className="flex flex-row">
-        <Label htmlFor="centermanager" className="text-sm  md:text-base">
-          致中心經理：
-        </Label>
-        <Select onValueChange={(value) => setCentermanager(value)}>
-          <SelectTrigger className="focus:ring-gray-400 w-40 mb-2">
-            <SelectValue
-              placeholder={proposalContent.centermanager.personalname}
-            />
-          </SelectTrigger>
-        </Select>
-      </div>
-      <div className="flex flex-row">
-        <Label htmlFor="createdTime" className="text-sm  md:text-base">
-          提案建立時間：
-        </Label>
-        <span className="text-sm  md:text-base ml-2">
-          {new Date(proposalContent.timestamp).toLocaleString()}
-        </span>
-      </div>
+
       {!abletosubmit ? (
         <div className="text-red-500">請填寫所有帶有*的資料</div>
       ) : null}
@@ -349,6 +358,7 @@ export default function ReviewProposal({
                 required
                 type="text"
                 value={proposalContent.eventName}
+                readOnly
               />
             </div>
             <div className=" mt-1 flex flex-row">
@@ -367,6 +377,7 @@ export default function ReviewProposal({
                           type="checkbox"
                           name={item}
                           checked={proposalContent.eventTypes.includes(item)}
+                          readOnly
                         />
                       </td>
                       <td className="text-sm  md:text-base">{item}</td>
@@ -387,6 +398,7 @@ export default function ReviewProposal({
                   required
                   type="text"
                   value={proposalContent.decc8}
+                  readOnly
                 />
               </div>
             ) : null}
@@ -402,6 +414,7 @@ export default function ReviewProposal({
                   required
                   type="text"
                   value={proposalContent.decc4}
+                  readOnly
                 />
               </div>
             ) : null}
@@ -417,7 +430,7 @@ export default function ReviewProposal({
                   required
                   type="text"
                   value={proposalContent.decc5}
-                  onChange={(e) => setDecc5Content(e.target.value)}
+                  readOnly
                 />
               </div>
             ) : null}
@@ -440,6 +453,7 @@ export default function ReviewProposal({
                         required
                         type="text"
                         value={proposalContent.eventVolunteerElderlyNum}
+                        readOnly
                       />
                       <Label
                         htmlFor="othersnum"
@@ -453,6 +467,7 @@ export default function ReviewProposal({
                         required
                         type="text"
                         value={proposalContent.eventVolunteerOthersNum}
+                        readOnly
                       />
                     </div>
                   );
@@ -466,6 +481,7 @@ export default function ReviewProposal({
                         required
                         type="checkbox"
                         checked={proposalContent.eventApplicant.member}
+                        readOnly
                       />
                       <Label
                         htmlFor="member"
@@ -480,6 +496,7 @@ export default function ReviewProposal({
                         required
                         type="checkbox"
                         checked={proposalContent.eventApplicant.nonmember}
+                        readOnly
                       />
                       <Label
                         htmlFor="member"
@@ -494,6 +511,7 @@ export default function ReviewProposal({
                         required
                         type="checkbox"
                         checked={proposalContent.eventApplicant.others}
+                        readOnly
                       />
                       <Label
                         htmlFor="others"
@@ -507,6 +525,7 @@ export default function ReviewProposal({
                         required
                         type="text"
                         value={proposalContent.eventApplicant.othersname}
+                        readOnly
                       />
                     </div>
                   );
@@ -522,6 +541,7 @@ export default function ReviewProposal({
                         required
                         type="text"
                         value={getInputs(item)}
+                        readOnly
                       />
                     </div>
                   );
@@ -548,6 +568,7 @@ export default function ReviewProposal({
                 required
                 type="text"
                 value={proposalContent.eventpurpose}
+                readOnly
               />
             </div>
             <div className="flex flex-row">
@@ -560,6 +581,7 @@ export default function ReviewProposal({
                 required
                 type="text"
                 value={proposalContent.eventevaluate}
+                readOnly
               />
             </div>
             <div className="flex flex-row">
@@ -575,6 +597,7 @@ export default function ReviewProposal({
                 required
                 type="text"
                 value={proposalContent.eventpurposedetail}
+                readOnly
               />
             </div>
             <div className="flex flex-row">
@@ -587,6 +610,7 @@ export default function ReviewProposal({
                 required
                 type="text"
                 value={proposalContent.pagetwonote}
+                readOnly
               />
             </div>
           </div>
@@ -609,6 +633,7 @@ export default function ReviewProposal({
                 required
                 type="text"
                 value={proposalContent.eventrevenue}
+                readOnly
               />
             </div>
             <div className="flex flex-row">
@@ -621,6 +646,7 @@ export default function ReviewProposal({
                 required
                 type="text"
                 value={proposalContent.eventbudget}
+                readOnly
               />
             </div>
             <div className="flex flex-row">
@@ -633,6 +659,7 @@ export default function ReviewProposal({
                 required
                 type="text"
                 value={proposalContent.pagethreenote}
+                readOnly
               />
             </div>
           </div>
@@ -657,7 +684,7 @@ export default function ReviewProposal({
       {role == "deptmanager" ? (
         <div className="flex flex-row">
           <Label htmlFor="deptmanagerComment" className="text-sm  md:text-base">
-            部門主任/督導意見：
+            部門主任/督導意見：<span className="text-red-500">*</span>
           </Label>
           {proposalContent.status == "pending" ? (
             <textarea
@@ -675,6 +702,7 @@ export default function ReviewProposal({
               required
               type="text"
               value={proposalContent.deptcomment}
+              readOnly
             />
           )}
         </div>
@@ -704,6 +732,7 @@ export default function ReviewProposal({
               required
               type="text"
               value={proposalContent.centercomment}
+              readOnly
             />
           )}
 
@@ -762,6 +791,7 @@ export default function ReviewProposal({
                 ? "還沒新增意見"
                 : proposalContent.deptcomment
             }
+            readOnly
           />
           <Label
             htmlFor="centermanagerComment"
@@ -779,6 +809,7 @@ export default function ReviewProposal({
                 ? "還沒新增意見"
                 : proposalContent.centercomment
             }
+            readOnly
           />
         </div>
       ) : null}
