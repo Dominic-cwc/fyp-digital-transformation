@@ -1,6 +1,6 @@
 import Login from "../components/component/login";
 import MainPageContainer from "../components/component/MainContainer";
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { UserContext } from "@/context/UserContext";
 
 export default function Index() {
