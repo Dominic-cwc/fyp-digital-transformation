@@ -87,6 +87,8 @@ export default function Proposal({
   const [abletosubmit, setAbletosubmit] = useState(true);
   const [clickedSubmit, setClickedSubmit] = useState(false);
 
+  const [evaluateMode, setEvaluateMode] = useState(null);
+
   const handleCheckChange = (event) => {
     if (event.target.checked) {
       setCheckedItems([...checkedItems, event.target.name]);
@@ -413,7 +415,7 @@ export default function Proposal({
               />
             </svg>
           </div>
-          <p className="mt-4">
+          <p className="mt-4 flex flex-row">
             <Button
               className="w-full bg-gray-300 transition-all duration-300 ease-in-out hover:bg-green-400"
               onClick={(e) => {
@@ -425,6 +427,9 @@ export default function Proposal({
                   活動對象: eventTarget,
                   活動目的: eventpurpose,
                   活動目的內容: eventpurposedetail,
+                  活動地點: eventLocation,
+                  活動人數: eventQuota,
+                  分析模式: evaluateMode ? evaluateMode : "一般模式",
                 };
                 axios
                   .post("/api/getSuggestions", eventDetailforAI)
@@ -440,6 +445,21 @@ export default function Proposal({
             >
               生成建議
             </Button>
+            <Select onValueChange={(value) => setEvaluateMode(value)}>
+              <SelectTrigger className="focus:ring-gray-400 w-40 ml-2">
+                <SelectValue placeholder="評估模式" />
+              </SelectTrigger>
+              <SelectContent className="bg-white">
+                <SelectGroup>
+                  <SelectItem key="1" value="一般模式">
+                    一般模式
+                  </SelectItem>
+                  <SelectItem key="2" value="深度模式">
+                    深度模式
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </p>
           <div className="mt-4" id="aiOutput"></div>
         </div>

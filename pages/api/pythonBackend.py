@@ -21,13 +21,24 @@ async def get_responses(messages):
 
 @app.route('/api/getSuggestions', methods=['POST'])
 def getSuggestions():
-    data = f.request.data.decode('utf-8')
+    data = eval(f.request.data.decode('utf-8'))
+    rules = ""
+    question = ""
 
-    content = """請以繁體中文進行回答, 基於所獲得的活動資料，利用點格式回答關於活動安全的建議(對於參加者而言)。如果提供的活動資料為空或不合理, 請回答'沒有提供足夠資料或所提供的資料不合理。'"""
+    if data["分析模式"] == "一般模式":
+        rules = "Please answer in Traditional Chinese, and provide brief answers. If the activity data provided is empty or unreasonable, please answer 'No sufficient data provided or the data provided is unreasonable.'"
+        question = "Based on the activity data provided, provide safety suggestions for participants."
+   
+    elif data["分析模式"] == "深度模式":
+        rules = "Please answer in Traditional Chinese, and provide detailed answers. If the activity data provided is empty or unreasonable, please answer 'No sufficient data provided or the data provided is unreasonable.'"
+        question = "Based on the activity data provided, provide safety suggestions for participants."
+   
     detail= data
-    print(content+"\n活動資料:"+detail)
+    del detail["分析模式"]
+    detail = json.dumps(detail, ensure_ascii=False)
+    print("Rules: "+rules+"\nQuestion: "+question+"\n活動資料:"+detail)
 
-    messagetoAI = fp.ProtocolMessage(role="user", content=content+detail)
+    messagetoAI = fp.ProtocolMessage(role="user", content="Rules: "+rules+"\nQuestion: "+question+"\n活動資料:"+detail)
     result = asyncio.run(get_responses([messagetoAI]))
     return json.dumps({'message':result}), 200, {'Content-Type': 'application/json', "charset": "UTF-8"}
 
