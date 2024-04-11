@@ -149,7 +149,7 @@ export default function ReviewProposal({
                 flag: "blue",
                 forUser: false,
               })
-              .error((err) => {
+              .catch((err) => {
                 console.log(err);
               });
 
@@ -162,7 +162,7 @@ export default function ReviewProposal({
                 flag: "none",
                 forUser: true,
               })
-              .error((err) => {
+              .catch((err) => {
                 console.log(err);
               });
           });
