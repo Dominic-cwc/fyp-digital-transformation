@@ -51,6 +51,7 @@ export default function MainPage({ user, logout }) {
                     className="mr-2 bg-gray-400 transition-all duration-300 ease-in-out hover:bg-red-400"
                     title="Event Safety Suggestion"
                     onClick={() => setIsSuggestionOpen(!isSuggestionOpen)}
+                    size="icon"
                   >
                     <span className="sr-only">Event Safety Suggestion</span>
                     <Image
@@ -66,6 +67,7 @@ export default function MainPage({ user, logout }) {
                   className="bg-gray-400 transition-all duration-300 ease-in-out hover:bg-red-400"
                   title="Logout"
                   onClick={logout}
+                  size="icon"
                 >
                   <span className="sr-only">Logout</span>
                   <Image
