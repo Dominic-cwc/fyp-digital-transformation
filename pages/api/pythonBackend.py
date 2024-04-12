@@ -23,25 +23,28 @@ async def get_responses(messages):
 def before_request():
     if f.request.method == 'OPTIONS':
         origin = f.request.headers.get('Origin')
-        if origin and "localhost" in origin:
+        if not origin or origin=="" or "localhost" in origin:
             response = f.make_response()
             response.headers['Access-Control-Allow-Origin'] = origin
             response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
             response.headers['Access-Control-Allow-Methods'] = 'POST'
             response.headers['Access-Control-Allow-Credentials'] = 'true'
             return response
+        else:
+            return f.abort(403)
 
 
 @app.route('/api/getSuggestions', methods=['POST'])
 def getSuggestions():
     origin = f.request.headers.get('Origin')
     response = f.make_response()
-    if origin and "localhost" in origin:
-        print("Origin: "+origin)
+    if not origin or origin=="" or "localhost" in origin:
         response.headers['Access-Control-Allow-Origin'] = origin
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
         response.headers['Access-Control-Allow-Methods'] = 'POST'
         response.headers['Access-Control-Allow-Credentials'] = 'true'
+    else:
+        return f.abort(403)
 
     data = eval(f.request.data.decode('utf-8'))
     rules = ""
