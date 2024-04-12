@@ -319,10 +319,15 @@ export default function Proposal({
     for (let i = 0; i < text.length; i++) {
       setTimeout(function () {
         output.innerHTML += text.charAt(i);
+
+        // if **xx** appears in previous, remove the ** and change the text to bold
+        output.innerHTML = output.innerHTML.replace(
+          /\*\*(.*?)\*\*/g,
+          "<b>$1</b>"
+        );
       }, speed * i);
     }
   };
-
   const checkInputtedContent = () => {
     if (eventName == "") {
       return false;
@@ -395,8 +400,13 @@ export default function Proposal({
         }
       >
         <div className="bg-white p-4 rounded-lg min-h-full">
-          <div className="flex justify-between">
-            <h1 className="text-lg font-semibold">活動安全建議AI</h1>
+          <div className="flex justify-between items-center">
+            <div className="flex flex-row items-center">
+              <h1 className="text-lg font-semibold">活動安全建議AI/</h1>
+              <div className="text-sm font-semibold text-gray-500">
+                基於GPT-4
+              </div>
+            </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 cursor-pointer text-red-500"
@@ -432,12 +442,16 @@ export default function Proposal({
                   分析模式: evaluateMode ? evaluateMode : "一般模式",
                 };
                 axios
-                  .post("/api/getSuggestions", eventDetailforAI)
+                  .post(
+                    "http://localhost:5000/api/getSuggestions",
+                    eventDetailforAI
+                  )
                   .then((res) => {
                     textwriter(res.data.message, "aiOutput");
                     target.innerText = "生成建議";
                   })
                   .catch((err) => {
+                    console.log(err);
                     textwriter("AI建議系統發生錯誤", "aiOutput");
                     target.innerText = "生成建議";
                   });
