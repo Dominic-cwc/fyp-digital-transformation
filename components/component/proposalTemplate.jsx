@@ -312,20 +312,16 @@ export default function Proposal({
   }, [proposalContent]);
 
   const textwriter = (text, id) => {
-    let speed = 50;
     let output = document.getElementById(id);
-    output.innerHTML = "";
 
     for (let i = 0; i < text.length; i++) {
-      setTimeout(function () {
-        output.innerHTML += text.charAt(i);
+      output.innerHTML += text.charAt(i);
 
-        // if **xx** appears in previous, remove the ** and change the text to bold
-        output.innerHTML = output.innerHTML.replace(
-          /\*\*(.*?)\*\*/g,
-          "<b>$1</b>"
-        );
-      }, speed * i);
+      // if **xx** appears in previous, remove the ** and change the text to bold
+      output.innerHTML = output.innerHTML.replace(
+        /\*\*(.*?)\*\*/g,
+        "<b>$1</b>"
+      );
     }
   };
   const checkInputtedContent = () => {
@@ -441,17 +437,32 @@ export default function Proposal({
                   活動人數: eventQuota,
                   分析模式: evaluateMode ? evaluateMode : "一般模式",
                 };
-                axios
-                  .post(
-                    "http://localhost:5000/api/getSuggestions",
-                    eventDetailforAI
-                  )
-                  .then((res) => {
-                    textwriter(res.data.message, "aiOutput");
+                fetch("http://localhost:5000/api/getSuggestions", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  mode: "cors",
+                  credentials: "include",
+                  body: JSON.stringify(eventDetailforAI),
+                })
+                  .then(async (res) => {
+                    document.getElementById("aiOutput").innerHTML = "";
+                    const reader = res.body.getReader();
+                    let decoder = new TextDecoder();
+                    while (true) {
+                      const { done, value } = await reader.read();
+                      if (done) {
+                        break;
+                      }
+                      const text = decoder.decode(value);
+                      textwriter(text, "aiOutput");
+                    }
                     target.innerText = "生成建議";
                   })
                   .catch((err) => {
                     console.log(err);
+                    document.getElementById("aiOutput").innerHTML = "";
                     textwriter("AI建議系統發生錯誤", "aiOutput");
                     target.innerText = "生成建議";
                   });

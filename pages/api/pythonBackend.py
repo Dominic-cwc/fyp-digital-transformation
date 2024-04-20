@@ -13,11 +13,18 @@ app = f.Flask(__name__) # create a new Flask instance
 
 # create a new FastAPI instance
 async def get_responses(messages):
-    result = ""
     async for partial in fp.get_bot_response(messages=messages, bot_name="GPT-4", api_key=api_key):
-        result += partial.text
-    return result
+        yield partial.text
 
+def sync_wrapper(async_gen_func, *args, **kwargs):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    gen = async_gen_func(*args, **kwargs)
+    while True:
+        try:
+            yield loop.run_until_complete(gen.__anext__())
+        except StopAsyncIteration:
+            break
 
 @app.before_request
 def before_request():
@@ -64,11 +71,8 @@ def getSuggestions():
     print("Rules: "+rules+"\nQuestion: "+question+"\nData:"+detail)
 
     messagetoAI = fp.ProtocolMessage(role="user", content="Rules: "+rules+"\nQuestion: "+question+"\nData:"+detail)
-    result = asyncio.run(get_responses([messagetoAI]))
-    response.headers['Content-Type'] = 'application/json'
-    response.headers["charset"] = "UTF-8"
-    response.data = json.dumps({'message':result})
-    return response
+    responsegen = sync_wrapper(get_responses, [messagetoAI])
+    return f.Response(f.stream_with_context(responsegen), mimetype='text/plain', headers={"Access-Control-Allow-Origin": origin, "Access-Control-Allow-Credentials": "true"})
 
 if __name__ == '__main__':
     app.run(debug=True)
