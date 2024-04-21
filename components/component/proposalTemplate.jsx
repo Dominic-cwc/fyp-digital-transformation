@@ -313,6 +313,7 @@ export default function Proposal({
 
   const textwriter = (text, id) => {
     let output = document.getElementById(id);
+    let screen = document.getElementById("safetySuggestion");
 
     for (let i = 0; i < text.length; i++) {
       output.innerHTML += text.charAt(i);
@@ -322,7 +323,16 @@ export default function Proposal({
         /\*\*(.*?)\*\*/g,
         "<b>$1</b>"
       );
+
+      // if ### xxx appears in previous, remove the ### and change the text to h3
+      output.innerHTML = output.innerHTML.replace(
+        /### (.*?)\n/g,
+        "<h3 class='text-lg font-semibold'>$1</h3>"
+      );
     }
+
+    // ensure scroll to bottom
+    screen.scrollTop = screen.scrollHeight;
   };
   const checkInputtedContent = () => {
     if (eventName == "") {
@@ -391,11 +401,12 @@ export default function Proposal({
       <div
         className={
           isSuggestionOpen
-            ? "fixed right-5 max-sm:w-8/12 w-4/12 h-4/6 border transition-all duration-500 ease-in-out overflow-y-auto"
+            ? "fixed right-5 max-sm:w-8/12 w-4/12 h-4/6 border transition-all duration-500 ease-in-out overflow-y-auto rounded-lg"
             : "fixed -right-full max-sm:w-8/12 w-4/12 h-4/6 border transition-all duration-500 ease-in-out overflow-y-auto"
         }
+        id="safetySuggestion"
       >
-        <div className="bg-white p-4 rounded-lg min-h-full">
+        <div className="bg-white p-4 min-h-full">
           <div className="flex justify-between items-center">
             <div className="flex flex-row items-center">
               <h1 className="text-lg font-semibold">活動安全建議AI/</h1>
@@ -426,6 +437,9 @@ export default function Proposal({
               className="w-full bg-gray-300 transition-all duration-300 ease-in-out hover:bg-green-400"
               onClick={(e) => {
                 const target = e.currentTarget;
+
+                if (target.innerText == "生成中...") return;
+
                 target.innerText = "生成中...";
                 const eventDetailforAI = {
                   活動名稱: eventName,
