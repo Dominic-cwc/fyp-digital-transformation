@@ -655,9 +655,17 @@ export default function Proposal({
                           name={item}
                           checked={checkedItems.includes(item)}
                           onChange={handleCheckChange}
+                          id={item}
                         />
                       </td>
-                      <td className="text-sm  md:text-base">{item}</td>
+                      <td>
+                        <Label
+                          className="font-medium md:text-base"
+                          htmlFor={item}
+                        >
+                          {item}
+                        </Label>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
