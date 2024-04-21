@@ -17,14 +17,22 @@ async def get_responses(messages):
         yield partial.text
 
 def sync_wrapper(async_gen_func, *args, **kwargs):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    gen = async_gen_func(*args, **kwargs)
-    while True:
-        try:
-            yield loop.run_until_complete(gen.__anext__())
-        except StopAsyncIteration:
-            break
+    try:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        gen = async_gen_func(*args, **kwargs)
+        while True:
+            try:
+                yield loop.run_until_complete(gen.__anext__())
+            except StopAsyncIteration:
+                break
+    finally:
+        # Cancel all remaining tasks
+        for task in asyncio.all_tasks(loop):
+            task.cancel()
+        # Run the loop again to let the tasks finish cancellation
+        loop.run_until_complete(loop.shutdown_asyncgens())
+        loop.close()
 
 @app.before_request
 def before_request():
