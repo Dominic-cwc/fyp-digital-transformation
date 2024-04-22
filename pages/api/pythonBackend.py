@@ -67,11 +67,11 @@ def getSuggestions():
 
     if data["分析模式"] == "一般模式":
         rules = "Please answer in Traditional Chinese, and provide brief answers. If the data provided is empty or unreasonable, please answer 'No sufficient data provided or the data provided is unreasonable.' in Traditional Chinese."
-        question = "Based on the activity data provided, provide safety suggestions for participants."
+        question = "If the event is unsuitable for participants, please provide a reason. If the event is suitable, based on the activity data provided, provide safety suggestions for participants."
    
     elif data["分析模式"] == "深度模式":
         rules = "Please answer in Traditional Chinese, and provide detailed answers. If the activity data provided is empty or unreasonable, please answer 'No sufficient data provided or the data provided is unreasonable.' in Traditional Chinese."
-        question = "Based on the activity data provided, provide safety suggestions for participants."
+        question = "If the event is unsuitable for the participants, please provide a reason. If the event is suitable, based on the activity data provided, provide safety suggestions for participants."
    
     detail= data
     del detail["分析模式"]
