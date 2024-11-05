@@ -52,6 +52,7 @@ def before_request():
 @app.route('/api/getSuggestions', methods=['POST'])
 def getSuggestions():
     origin = f.request.headers.get('Origin')
+    # create a new response object
     response = f.make_response()
     if not origin or origin=="" or "localhost" in origin:
         response.headers['Access-Control-Allow-Origin'] = origin
